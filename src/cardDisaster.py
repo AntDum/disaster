@@ -9,7 +9,7 @@ class Card(GUIComponent):
         super().__init__(pos,(CARD_WIDTH, CARD_HEIGHT), **kwargs)
         self.quantity = quantity
         self.manager = manager
-        self.label_quantity = Label((pos[0]+((CARD_WIDTH*7)//10),pos[1]+((CARD_HEIGHT*7)//10)), str(quantity), NORMAL_FONT, text_color=(200,0,0))
+        self.label_quantity = Label((pos[0]+((CARD_WIDTH*7)//10),pos[1]+((CARD_HEIGHT*8)//10)), str(quantity), NORMAL_FONT, text_color=(200,0,0))
 
     def draw(self, screen):
         super().draw(screen)
