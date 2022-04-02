@@ -9,7 +9,7 @@ class Disaster:
 
 class Tornado(Disaster):
 
-    image = img.load(os.path.join("res","disaster","tornado.png"))
+    image = img.load(os.path.join("res","disaster","tornade_1.png"))
 
 
     def __init__(self, axe, pos, city) -> None:

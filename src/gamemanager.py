@@ -43,12 +43,11 @@ class GameManager:
 
             pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
             #TODO : Automatiser les imports de cartes.
-            jor1 = TornadoCard(self.city,(0,CARD_PADDING))
-            jor2 = TornadoCard(self.city,(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
-            jor3 = TornadoCard(self.city,(CARD_PADDING+CARD_WIDTH,CARD_PADDING))
-            jor4 = TornadoCard(self.city,(CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
+            jor1 = TornadoCard(self,(0,CARD_PADDING))
+            jor2 = TornadoCard(self,(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
+            jor3 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING))
+            jor4 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
 
-            jor1.on_click = lambda : self.set_disaster(jor1)
             pn.add(jor1, jor2, jor3, jor4)
 
             pn.move((SIDE_POS, 0))
