@@ -35,7 +35,7 @@ class GameManager:
             jor3 = TornadoCard((CARD_PADDING+CARD_WIDTH,CARD_PADDING))
             jor4 = TornadoCard((CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
 
-            jor1.on_click = lambda : self.disaster_selected(jor1)
+            jor1.on_click = lambda : self.set_disaster(jor1)
             pn.add(jor1, jor2, jor3, jor4)
 
             pn.move((SIDE_POS, 0))
@@ -48,6 +48,16 @@ class GameManager:
         
         self.city.draw(screen, padding_x=CITY_PADDING,  padding_y=CITY_PADDING)
         self.side_bar.draw(screen)
+
+        self.city.reset_preview()
+        if self.disaster_selected != None:
+            mx, my = pg.mouse.get_pos()
+            if mx < SIDE_POS:
+
+                pos = self.disaster_selected.preview(*self.city.cursor_to_grid(mx, my)) # With the mouse
+                for p in pos:
+                    self.city.add_preview(p)
+        
 
     def play(self):
         self.in_game = True

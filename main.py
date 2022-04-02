@@ -18,6 +18,8 @@ menu = Menu(gameManager)
 
 gameManager.set_level(1)
 
+gameManager.in_game = False
+
 
 while not gameManager.shutdown:
     dt = clock.tick(30)

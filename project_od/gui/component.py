@@ -218,6 +218,10 @@ class GUIComponent(Component, pg.sprite.Sprite):
             self.has_image = True
             self.image = image
     
+    def set_image(self, image = None):
+        self.image = image
+        self.has_image = (image != None)
+
     def _render(self, surf, pos=(0,0)):
         pg.draw.rect(surface=surf, 
                     color=self.color, 
