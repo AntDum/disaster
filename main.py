@@ -27,7 +27,7 @@ while not gameManager.shutdown:
     for event in pg.event.get():
         if event.type == pg.QUIT:
            gameManager.quit()
-        
+
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_ESCAPE:
                 if gameManager.in_game:

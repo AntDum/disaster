@@ -17,9 +17,12 @@ SIDE_POS = WIDTH-SIDE_WIDTH
 
 CITY_PADDING = WIDTH // 30
 
-BUTTON_WIDTH = 210
-BUTTON_HEIGHT = 70
+BUTTON_WIDTH = 300
+BUTTON_HEIGHT = 100
 
 DISASTER_SPEED = 0.5 # second
 
-NORMAL_FONT = font.SysFont("Arial", 26)
+SMALL_FONT = font.SysFont("Agency FB", 16)
+NORMAL_FONT = font.SysFont("Agency FB", 26)
+LARGE_FONT = font.SysFont("Agency FB", 46)
+ULTRA_THICC_FONT = font.SysFont("Agency FB", 66)
