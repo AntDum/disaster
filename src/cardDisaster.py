@@ -1,3 +1,4 @@
+# from src.disaster import Tornado
 from project_od.gui import GUIComponent
 from option import CARD_WIDTH, CARD_HEIGHT
 import pygame.image as img
@@ -50,6 +51,9 @@ class TornadoCard(Card):
                 return [(x, i) for i in range(self.city.h-1, -1, -1)]
         self.launchable = False
         return []
+    
+    def get(self):
+        return None
 
 
 class TsunamiCard(Card):

@@ -1,7 +1,7 @@
 import pygame as pg
-
+from src.disaster import Tornado
 from option import TILE_SIZE
-
+from src.ressources import import_tile
 class Case:
     def __init__(self) -> None:
         self.protected = []
@@ -31,5 +31,10 @@ class NoBuilding(Case):
 class House(Case):
     def __init__(self) -> None:
         super().__init__()
-        self.image.fill((0,255,0))
+        self.image = import_tile("house")
 
+class Bunker(Case):
+    def __init__(self) -> None:
+        super().__init__()
+        self.image.fill((10,10,10))
+        self.protected = [Tornado]

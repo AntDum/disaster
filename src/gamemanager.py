@@ -36,6 +36,10 @@ class GameManager:
             self.city.grid[3][0] = NoBuilding()
             self.city.grid[0][2] = NoBuilding()
             self.city.grid[3][2] = NoBuilding()
+            self.city.grid[3][3] = Bunker()
+            self.city.grid[2][2] = Bunker()
+            self.city.grid[1][1] = Bunker()
+            self.city.grid[0][0] = Bunker()
 
             pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
             #TODO : Automatiser les imports de cartes.
@@ -56,7 +60,7 @@ class GameManager:
         self.city.update(0)
         
         self.city.reset_preview()
-        if not self.disaster_launch():
+        if not self.disaster_launch:
             if self.disaster_selected != None:
                 mx, my = pg.mouse.get_pos()
                 if mx < SIDE_POS:
@@ -65,11 +69,13 @@ class GameManager:
                     for p in pos:
                         self.city.add_preview(p)
 
-            self.disaster = self.disaster_selected.get()
+                if pg.mouse.get_pressed()[0]:
+                    self.disaster = self.disaster_selected.get()
         else:
+            # self.disaster.update()
             pass
 
-        
+
         self.city.draw(screen, padding_x=CITY_PADDING,  padding_y=CITY_PADDING)
         self.side_bar.draw(screen)
 

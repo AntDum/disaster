@@ -1,5 +1,6 @@
 import pygame.image as img
 from pygame.transform import scale
+from option import TILE_SIZE
 import os
 
 def import_button(file,prout):
@@ -7,3 +8,6 @@ def import_button(file,prout):
 
 def import_background(file):
     return img.load(os.path.join("res","bckg",f"{file}.png"))
+
+def import_tile(file):
+    return scale(img.load(os.path.join("res","tiles",f"{file}.png")),(TILE_SIZE,TILE_SIZE))
