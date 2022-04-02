@@ -11,3 +11,6 @@ def import_background(file):
 
 def import_tile(file):
     return scale(img.load(os.path.join("res","tiles",f"{file}.png")),(TILE_SIZE,TILE_SIZE))
+
+def import_disaster(file):
+    return scale(img.load(os.path.join("res","disaster",f"{file}.png")),(TILE_SIZE,TILE_SIZE))
