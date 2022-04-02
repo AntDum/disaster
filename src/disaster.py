@@ -6,11 +6,22 @@ from option import DISASTER_SPEED
 
 
 class Disaster:
-    def __init__(self) -> None:
+    def __init__(self, city) -> None:
         self.timer = 0
+        self.city = city
+        self.finish = False
 
     def update(self, dt):
         self.timer += dt
+    
+    def launch(self):
+        pass
+
+    def draw(self, screen):
+        pass
+
+    def preview(self):
+        return []
 
 class Tornado(Disaster):
 
@@ -18,11 +29,10 @@ class Tornado(Disaster):
 
 
     def __init__(self, axe, pos, city) -> None:
-        super().__init__()
+        super().__init__(city)
         self.axe = axe # left, up, right, down
         self.pos = pos # (x,y)
-        self.city = city
-        self.finish = False
+        
     
     def move(self):
         if self.moved >= len(self.next):
@@ -79,3 +89,20 @@ class Tornado(Disaster):
             self.timer = 0
             if not self.move():
                 self.finish = True
+
+class Fire(Disaster):
+    def __init__(self, city) -> None:
+        super().__init__(city)
+
+class Floor(Disaster):
+    def __init__(self, city) -> None:
+        super().__init__(city)
+
+class Earthquake(Disaster):
+    def __init__(self, city) -> None:
+        super().__init__(city)
+    
+    def preview(self):
+        return [(x,y) for x in range(self.city.w) for y in range(self.city.h)]
+        
+            

@@ -7,7 +7,7 @@ from option import *
 
 pg.init()
 
-screen = SmartScreen(WIDTH, HEIGHT, caption="Welcom to Panic city")
+screen = SmartScreen(WIDTH, HEIGHT, caption="WelCUM to Panic city") #TODO: Se rappeler de ma blague et changer le nom.
 
 screen.make_background((35,35,35))
 
