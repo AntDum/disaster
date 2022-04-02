@@ -22,7 +22,7 @@ gameManager.in_game = False
 
 
 while not gameManager.shutdown:
-    dt = clock.tick(30)
+    dt = clock.tick(30) / 1000
 
     for event in pg.event.get():
         if event.type == pg.QUIT:
@@ -42,7 +42,7 @@ while not gameManager.shutdown:
         if gameManager.paused:
             menu.pause(screen)
         else:
-            gameManager.update(screen)
+            gameManager.update(screen, dt)
     else:
         menu.home(screen)
 

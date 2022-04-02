@@ -11,12 +11,13 @@ class City:
         self.h = 0
 
 
-    def draw(self, screen, padding_x=0, padding_y =0):
+    def draw(self, screen):
         for y, line in enumerate(self.grid):
             for x, case in enumerate(line):
-                case.draw(screen, padding_x + x*(TILE_SIZE + 1), padding_y+ y*(TILE_SIZE + 1))
+                case.draw(screen, *self.grid_to_screen((x,y)))
         for x,y in self.preview_disaster:
-            screen.draw_rect(((padding_x + x*(TILE_SIZE + 1) + TILE_SIZE//4, padding_y+ y*(TILE_SIZE + 1) + TILE_SIZE//4),
+            x, y = self.grid_to_screen((x,y))
+            screen.draw_rect(((x + TILE_SIZE//4, y + TILE_SIZE//4),
                                     (TILE_SIZE//2, TILE_SIZE//2)), (0,0,255))
 
     def update(self, dt):
@@ -25,7 +26,7 @@ class City:
                 case.update(dt)
 
     def __getitem__(self, i):
-        return self.city[i[0]][i[1]]
+        return self.grid[i[0]][i[1]]
 
     def reset_preview(self):
         self.preview_disaster.clear()
@@ -42,3 +43,6 @@ class City:
         y = clamp(y, -1, self.h)
         # print(x,y)
         return x,y
+
+    def grid_to_screen(self, pos):
+        return CITY_PADDING + pos[0]*(TILE_SIZE + 1), CITY_PADDING+ pos[1]*(TILE_SIZE + 1)

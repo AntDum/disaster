@@ -1,6 +1,6 @@
 import pygame.image as img
 from pygame.transform import scale
-from option import TILE_SIZE
+from option import *
 import os
 
 def import_button(file,prout):
@@ -14,3 +14,6 @@ def import_tile(file):
 
 def import_disaster(file):
     return scale(img.load(os.path.join("res","disaster",f"{file}.png")),(TILE_SIZE,TILE_SIZE))
+
+def import_card(file):
+    return scale(img.load(os.path.join("res","card",f"{file}.png")),(CARD_WIDTH,CARD_HEIGHT))

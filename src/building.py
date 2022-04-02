@@ -5,6 +5,7 @@ from src.ressources import import_tile
 class Case:
     def __init__(self) -> None:
         self.protected = []
+        self.blocked = []
         self.image = pg.Surface((TILE_SIZE, TILE_SIZE))
 
     def draw(self, screen, x, y):
@@ -13,11 +14,14 @@ class Case:
     def update(self, dt=0):
         pass
 
-    def destroy(): # Détruit le batiment.
+    def destroy(self): # Détruit le batiment.
         pass
 
     def is_protected(self, disaster):
-        return isinstance(disaster, self.protected)
+        return isinstance(disaster, tuple(self.protected))
+    
+    def block(self, disaster):
+        return isinstance(disaster, tuple(self.blocked))
 
     
 class NoBuilding(Case):

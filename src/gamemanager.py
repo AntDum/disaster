@@ -54,7 +54,7 @@ class GameManager:
 
             self.side_bar = pn
     
-    def update(self, screen):
+    def update(self, screen, dt):
         self.side_bar.update()
         self.city.update(0)
         
@@ -70,14 +70,20 @@ class GameManager:
 
                 if pg.mouse.get_pressed()[0]:
                     self.disaster = self.disaster_selected.get()
+                    self.disaster_launch = True
+                    self.disaster.launch()
         else:
-            # self.disaster.update()
-            pass
+            self.disaster.update(dt)
+            if self.disaster.finish:
+                self.disaster_launch = False
 
 
-        self.city.draw(screen, padding_x=CITY_PADDING,  padding_y=CITY_PADDING)
+        self.city.draw(screen)
         self.side_bar.draw(screen)
 
+        if self.disaster_launch:
+            x, y = self.city.grid_to_screen(self.disaster.pos)
+            self.disaster.draw(screen, x, y)
     
         
 
