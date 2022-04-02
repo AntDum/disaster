@@ -68,12 +68,13 @@ class GameManager:
                     for p in pos:
                         self.city.add_preview(p)
 
-                if pg.mouse.get_pressed()[0]:
-                    self.disaster = self.disaster_selected.get()
-                    self.disaster_launch = True
-                    self.disaster.launch()
-                    self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
-                    self.disaster_selected = None
+                    if pg.mouse.get_pressed()[0]:
+                        self.disaster = self.disaster_selected.get()
+                        self.disaster_launch = True
+                        self.disaster.launch()
+                        self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
+                        if self.disaster_selected.can_be_selected():
+                            self.disaster_selected = None
         else:
             self.disaster.update(dt)
             if self.disaster.finish:

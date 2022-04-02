@@ -4,11 +4,11 @@ from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:
     value = 5
-    def __init__(self, manager) -> None:
+    def __init__(self, manager, image) -> None:
         self.protected = []
         self.blocked = []
-        self.image = pg.Surface((TILE_SIZE, TILE_SIZE))
         self.manager = manager
+        self.image = image
         self.is_destroyed = False
 
     def draw(self, screen, x, y):
@@ -41,8 +41,8 @@ class NoBuilding(Case):
 
     value = 0
     def __init__(self, manager) -> None:
-        super().__init__(manager)
-        self.image.fill((255,0,0))
+        super().__init__(manager, import_tile("sand"))
+
         self.is_destroyed = True
     
 
@@ -51,14 +51,12 @@ class House(Case):
     value = 20
     
     def __init__(self, manager) -> None:
-        super().__init__(manager)
-        self.image = import_tile("house")
+        super().__init__(manager, import_tile("house"))
 
 class Bunker(Case):
 
     value = 10
 
     def __init__(self, manager) -> None:
-        super().__init__(manager)
-        self.image.fill((10,10,10))
+        super().__init__(manager, pg.Surface((TILE_SIZE, TILE_SIZE)))
         self.protected = [Tornado]
