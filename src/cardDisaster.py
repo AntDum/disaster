@@ -88,24 +88,28 @@ class TsunamiCard(Card):
 
 
 class FloodCard(Card):
+
+    image = import_card("Journal inondation ")
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
+        super().__init__(manager, pos, quantity, image=self.image, **kwargs)
 
 
 class FireCard(Card):
+    image = import_card("Journal incendie")
+
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
+        super().__init__(manager, pos, quantity, image=self.image, **kwargs)
 
 
 class EarthquakeCard(Card):
 
-    image = import_card("tsunami")
+    image = import_card("Journal séisme ")
 
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
+        super().__init__(manager, pos, quantity, image=self.image,**kwargs)
     
-    def preview(self):
-        return Earthquake().preview()
+    def preview(self, x, y):
+        return Earthquake(self.manager.city).preview()
 
     def get(self):
         return Earthquake(self.manager.city)

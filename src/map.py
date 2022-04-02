@@ -7,6 +7,7 @@ class City:
         self.grid = []
         self.coast = [False, False, False, False] #Left, Up, Right, Down
         self.preview_disaster = set()
+        self.preview_destroy = set()
         self.w = 0
         self.h = 0
 
@@ -33,9 +34,13 @@ class City:
 
     def reset_preview(self):
         self.preview_disaster.clear()
+        self.preview_destroy.clear()
 
     def add_preview(self, pos):
         self.preview_disaster.add(pos)
+    
+    def add_destroy(self, pos):
+        self.preview_destroy.add(pos)
 
     def cursor_to_grid(self, x, y):
         x -= CITY_PADDING
