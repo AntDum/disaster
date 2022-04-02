@@ -2,7 +2,7 @@ from option import *
 from src.map import City
 from src.building import *
 from project_od.gui import Panel,Label
-from src.cardDisaster import TornadoCard
+from src.cardDisaster import EarthquakeCard, TornadoCard
 
 class GameManager:
     def __init__(self, screen) -> None:
@@ -42,10 +42,11 @@ class GameManager:
             pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
             #TODO : Automatiser les imports de cartes.
             jor1 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING),2)
+            jor2 = EarthquakeCard(self,(0,CARD_PADDING),2)
 
             self.score_label = Label((SIDE_POS/2-30,10),"Score : 0",NORMAL_FONT)
 
-            pn.add(jor1)
+            pn.add(jor1, jor2)
 
             pn.move((SIDE_POS, 0))
 
@@ -73,7 +74,7 @@ class GameManager:
                         self.disaster_launch = True
                         self.disaster.launch()
                         self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
-                        if self.disaster_selected.can_be_selected():
+                        if not self.disaster_selected.can_be_selected():
                             self.disaster_selected = None
         else:
             self.disaster.update(dt)

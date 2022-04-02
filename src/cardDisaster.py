@@ -1,4 +1,4 @@
-from src.disaster import Tornado
+from src.disaster import Tornado, Earthquake
 from project_od.gui import GUIComponent, Label
 from option import CARD_WIDTH, CARD_HEIGHT, NORMAL_FONT
 from src.ressources import import_card
@@ -85,3 +85,27 @@ class TsunamiCard(Card):
     
     def __init__(self,manager, pos=(0, 0), quantity=1) -> None:
         super().__init__(manager,pos, quantity, image = self.image)
+
+
+class FloodCard(Card):
+    def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
+        super().__init__(manager, pos, quantity, **kwargs)
+
+
+class FireCard(Card):
+    def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
+        super().__init__(manager, pos, quantity, **kwargs)
+
+
+class EarthquakeCard(Card):
+
+    image = import_card("tsunami")
+
+    def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
+        super().__init__(manager, pos, quantity, **kwargs)
+    
+    def preview(self):
+        return Earthquake().preview()
+
+    def get(self):
+        return Earthquake(self.manager.city)
