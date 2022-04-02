@@ -20,7 +20,6 @@ class Case:
         return isinstance(disaster, self.protected)
 
     
-
 class NoBuilding(Case):
     def __init__(self) -> None:
         super().__init__()
@@ -33,3 +32,4 @@ class House(Case):
     def __init__(self) -> None:
         super().__init__()
         self.image.fill((0,255,0))
+

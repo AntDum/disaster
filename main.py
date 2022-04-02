@@ -13,7 +13,7 @@ screen.make_background((35,35,35))
 
 clock = pg.time.Clock()
 
-gameManager = GameManager()
+gameManager = GameManager(screen)
 menu = Menu(gameManager)
 
 gameManager.set_level(1)

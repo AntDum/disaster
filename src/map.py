@@ -7,6 +7,8 @@ class City:
         self.grid = []
         self.coast = [False, False, False, False] #Left, Up, Right, Down
         self.preview_disaster = set()
+        self.w = 0
+        self.h = 0
 
 
     def draw(self, screen, padding_x=0, padding_y =0):
@@ -32,8 +34,11 @@ class City:
         self.preview_disaster.add(pos)
 
     def cursor_to_grid(self, x, y):
+        x -= CITY_PADDING
+        y -= CITY_PADDING
         x //= TILE_SIZE
         y //= TILE_SIZE
-        x = clamp(x, -1, len(self.grid[0]))
-        y = clamp(y, -1, len(self.grid))
+        x = clamp(x, -1, self.w)
+        y = clamp(y, -1, self.h)
+        # print(x,y)
         return x,y
