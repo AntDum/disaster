@@ -19,6 +19,8 @@ class GameManager:
 
         self.disaster = None
 
+        self.score = 0
+
     def set_disaster(self, disaster):
         if not self.disaster_launch:
             self.disaster_selected = disaster
@@ -28,31 +30,33 @@ class GameManager:
             self.city = City()
             w = 4
             h = 4
-            self.city.grid = [[House() for _ in range(w)] for _ in range(h)]
+            self.city.grid = [[House(self) for _ in range(w)] for _ in range(h)]
             self.city.w = w
             self.city.h = h
-            self.city.grid[0][0] = NoBuilding()
-            self.city.grid[1][0] = NoBuilding()
-            self.city.grid[3][0] = NoBuilding()
-            self.city.grid[0][2] = NoBuilding()
-            self.city.grid[3][2] = NoBuilding()
-            self.city.grid[3][3] = Bunker()
-            self.city.grid[2][2] = Bunker()
-            self.city.grid[1][1] = Bunker()
-            self.city.grid[0][0] = Bunker()
+            self.city.grid[0][0] = NoBuilding(self)
+            self.city.grid[1][0] = NoBuilding(self)
+            self.city.grid[3][0] = NoBuilding(self)
+            self.city.grid[0][2] = NoBuilding(self)
+            self.city.grid[3][2] = NoBuilding(self)
+            self.city.grid[3][3] = Bunker(self)
+            self.city.grid[2][2] = Bunker(self)
+            self.city.grid[1][1] = Bunker(self)
+            self.city.grid[0][0] = Bunker(self)
 
             pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
             #TODO : Automatiser les imports de cartes.
-            jor1 = TornadoCard(self,(0,CARD_PADDING))
-            jor2 = TornadoCard(self,(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
-            jor3 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING))
-            jor4 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING))
+            jor1 = TornadoCard(self,(0,CARD_PADDING),2)
+            jor2 = TornadoCard(self,(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),0)
+            jor3 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING),0)
+            jor4 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),0)
 
             pn.add(jor1, jor2, jor3, jor4)
 
             pn.move((SIDE_POS, 0))
 
             self.side_bar = pn
+
+            self.score = 0
     
     def update(self, screen, dt):
         self.side_bar.update()
@@ -72,6 +76,7 @@ class GameManager:
                     self.disaster = self.disaster_selected.get()
                     self.disaster_launch = True
                     self.disaster.launch()
+                    self.disaster_selected.quantity -= 1
         else:
             self.disaster.update(dt)
             if self.disaster.finish:

@@ -3,10 +3,13 @@ from src.disaster import Tornado
 from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:
-    def __init__(self) -> None:
+    value = 5
+    def __init__(self, manager) -> None:
         self.protected = []
         self.blocked = []
         self.image = pg.Surface((TILE_SIZE, TILE_SIZE))
+        self.manager = manager
+        self.is_destroyed = False
 
     def draw(self, screen, x, y):
         screen.blit(self.image, (x,y))
@@ -15,30 +18,47 @@ class Case:
         pass
 
     def destroy(self): # Détruit le batiment.
-        pass
+        if not self.is_destroyed:
+            self.image.fill((255,255,0))
+            self.manager.score += 10
+            self.is_destroyed = True
+            print(self.manager.score)
 
     def is_protected(self, disaster):
-        return isinstance(disaster, tuple(self.protected))
+        if not self.is_destroyed:
+            return isinstance(disaster, tuple(self.protected))
+        else:
+            return False
     
     def block(self, disaster):
-        return isinstance(disaster, tuple(self.blocked))
+        if not self.is_destroyed:
+            return isinstance(disaster, tuple(self.blocked))
+        else:
+            return False
 
     
 class NoBuilding(Case):
-    def __init__(self) -> None:
-        super().__init__()
+
+    value = 0
+    def __init__(self, manager) -> None:
+        super().__init__(manager)
         self.image.fill((255,0,0))
+        self.is_destroyed = True
     
-    def is_protected(self, disaster):
-        return False
 
 class House(Case):
-    def __init__(self) -> None:
-        super().__init__()
+
+    value = 20
+    
+    def __init__(self, manager) -> None:
+        super().__init__(manager)
         self.image = import_tile("house")
 
 class Bunker(Case):
-    def __init__(self) -> None:
-        super().__init__()
+
+    value = 10
+
+    def __init__(self, manager) -> None:
+        super().__init__(manager)
         self.image.fill((10,10,10))
         self.protected = [Tornado]

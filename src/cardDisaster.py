@@ -19,6 +19,13 @@ class Card(GUIComponent):
     def preview(self, x, y):
         pass
 
+    def get(self):
+        return None
+
+    def on_click(self):
+        if self.quantity > 0:
+            self.manager.set_disaster(self)
+
 class TornadoCard(Card):
 
     image = import_card("tornado")
@@ -56,8 +63,7 @@ class TornadoCard(Card):
     def get(self):
         return Tornado(self.axe, self.pos, self.manager.city)
 
-    def on_click(self):
-        self.manager.set_disaster(self)
+
 
 class TsunamiCard(Card):
 

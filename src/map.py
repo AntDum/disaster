@@ -26,7 +26,10 @@ class City:
                 case.update(dt)
 
     def __getitem__(self, i):
-        return self.grid[i[0]][i[1]]
+        return self.grid[i[1]][i[0]]
+    
+    def __setitem__(self, i, e):
+        self.grid[i[1]][i[0]] = e
 
     def reset_preview(self):
         self.preview_disaster.clear()
