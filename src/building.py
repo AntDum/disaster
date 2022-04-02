@@ -20,7 +20,7 @@ class Case:
     def destroy(self): # Détruit le batiment.
         if not self.is_destroyed:
             self.image.fill((255,255,0))
-            self.manager.score += 10
+            self.manager.score += self.value
             self.is_destroyed = True
             print(self.manager.score)
 
