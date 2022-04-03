@@ -2,7 +2,9 @@ from option import *
 from src.map import City
 from src.building import *
 from project_od.gui import Panel,Label
-from src.cardDisaster import EarthquakeCard, TornadoCard
+from src.cardDisaster import *
+from src.level import Level
+
 
 class GameManager:
     def __init__(self, screen) -> None:
@@ -21,44 +23,71 @@ class GameManager:
 
         self.score = 0
 
+        self.l = None
+
     def set_disaster(self, disaster):
         if not self.disaster_launch:
             self.disaster_selected = disaster
-    
+
     def set_level(self, level):
-        if level == 1:
-            self.city = City()
-            w = 4
-            h = 4
-            self.city.grid = [[House(self) for _ in range(w)] for _ in range(h)]
-            self.city.w = w
-            self.city.h = h
-            self.city.grid[0][0] = NoBuilding(self)
-            self.city.grid[1][0] = NoBuilding(self)
-            self.city.grid[3][0] = NoBuilding(self)
-            self.city.grid[0][2] = NoBuilding(self)
-            self.city.grid[3][2] = NoBuilding(self)
+        self.city = City()
+        self.l = Level(level)
+        setup = self.l.report()
+        print(setup.keys())
 
-            pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
-            #TODO : Automatiser les imports de cartes.
-            jor1 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING),2)
-            jor2 = EarthquakeCard(self,(0,CARD_PADDING),2)
+        self.city.grid = []
+        for line in setup['grid']:
+            row = []
+            for tile in line:
+                if(tile == '0'):
+                     row.append(NoBuilding(self))
+                elif(tile == '1'): row.append(House(self))
+            self.city.grid.append(row)
 
-            self.score_label = Label((SIDE_POS/2-30,10),"Score : 0",NORMAL_FONT)
+        self.city.w = setup["size"]
+        self.city.h = setup["size"]
 
-            pn.add(jor1, jor2)
+        pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
+        #TODO : Automatiser les imports de cartes.
 
-            pn.move((SIDE_POS, 0))
+        self.cards = []
+        positions = [(0,CARD_PADDING),(CARD_PADDING+CARD_WIDTH,CARD_PADDING),(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),(CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),(0,2*(CARD_PADDING + CARD_HEIGHT) + CARD_PADDING),(CARD_PADDING+CARD_WIDTH,2*(CARD_PADDING + CARD_HEIGHT) + CARD_PADDING)]
+        iterator = 0
+        for card,qte in setup["cards"]:
+            if(card == 'tornado'):
+                self.cards.append(TornadoCard(self,positions[iterator],int(qte)))
+                iterator += 1
+            if(card == 'tsunami'):
+                self.cards.append(TsunamiCard(self,positions[iterator],int(qte)))
+                iterator += 1
+            if(card == 'earthquake'):
+                self.cards.append(EarthquakeCard(self,positions[iterator],int(qte)))
+                iterator += 1
+            if(card == 'fire'):
+                self.cards.append(FireCard(self,positions[iterator],int(qte)))
+                iterator += 1
+            if(card == 'flood'):
+                self.cards.append(FloodCard(self,positions[iterator],int(qte)))
+                iterator += 1
+            if(card == 'meteor'):
+                self.cards.append(MeteorCard(self,positions[iterator],int(qte)))
+                iterator += 1
 
-            self.side_bar = pn
+        self.score_label = Label((SIDE_POS/2-30,10),"Score : 0",NORMAL_FONT)
 
-            self.score = 0
-    
+        pn.add(*self.cards)
+
+        pn.move((SIDE_POS, 0))
+
+        self.side_bar = pn
+
+        self.score = 0
+
     def update(self, screen, dt):
         self.score_label.set_text("Score : "+str(self.score))
         self.side_bar.update()
         self.city.update(0)
-        
+
         self.city.reset_preview()
         if not self.disaster_launch:
             if self.disaster_selected != None:
@@ -88,20 +117,18 @@ class GameManager:
         if self.disaster_launch:
             x, y = self.city.grid_to_screen(self.disaster.pos)
             self.disaster.draw(screen, x, y)
-    
-        
+
+
 
     def play(self):
         self.screen.make_background((35,35,35))
         self.in_game = True
-    
+
     def pause(self):
         self.paused = True
-    
+
     def resume(self):
         self.paused = False
-    
+
     def quit(self):
         self.shutdown = True
-
-    

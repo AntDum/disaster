@@ -18,14 +18,14 @@ class Card(GUIComponent):
     def update(self):
         super().update()
         self.label_quantity.update()
-    
+
     def preview(self, x, y):
         pass
-    
+
     def set_quantity(self, x):
         self.quantity = x
         self.label_quantity.set_text(self.quantity)
-    
+
     def can_be_selected(self):
         return self.quantity > 0
 
@@ -35,7 +35,7 @@ class Card(GUIComponent):
     def on_click(self):
         if self.can_be_selected():
             self.manager.set_disaster(self)
-    
+
     def move(self, pos):
         super().move(pos)
         self.label_quantity.move(pos)
@@ -73,7 +73,7 @@ class TornadoCard(Card):
                 return self.get().preview()
         self.launchable = False
         return []
-    
+
     def get(self):
         return Tornado(self.axe, self.pos, self.manager.city)
 
@@ -82,28 +82,34 @@ class TornadoCard(Card):
 class TsunamiCard(Card):
 
     image = import_card("tsunami")
-    
+
     def __init__(self,manager, pos=(0, 0), quantity=1) -> None:
         super().__init__(manager,pos, quantity, image = self.image)
 
 
 class FloodCard(Card):
+
+    image = import_card("flood")
+
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
+        super().__init__(manager, pos, quantity, **kwargs, image=self.image)
 
 
 class FireCard(Card):
+
+    image = import_card("fire")
+
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
+        super().__init__(manager, pos, quantity, **kwargs, image=self.image)
 
 
 class EarthquakeCard(Card):
 
-    image = import_card("tsunami")
+    image = import_card("earthquake")
 
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
-    
+        super().__init__(manager, pos, quantity, **kwargs, image=self.image)
+
     def preview(self):
         return Earthquake().preview()
 
