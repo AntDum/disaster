@@ -15,9 +15,11 @@ class Menu:
 
     btn_resume_img = import_button("resume_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
     btn_resume_img_clicked = import_button("resume_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
+    btn_resume_img_hover = import_button("resume_button_hover",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
 
-    btn_exit_img = import_button("exit_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1)))
-    btn_exit_img_clicked = import_button("exit_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1)))
+    btn_exit_img = import_button("exit_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
+    btn_exit_img_clicked = import_button("exit_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
+    btn_exit_img_hover = import_button("exit_button_hover",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
 
     big_planche = import_button("big_planche",(int(BUTTON_WIDTH*2.4),int(BUTTON_HEIGHT*2)))
 
@@ -88,12 +90,14 @@ class Menu:
             title = Label((30,50), "Pause", LARGE_FONT, text_color=(255,255,255)).center_x(pn).move((-50,0))
 
             resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+            resume_btn.on_hover_enter = lambda : resume_btn.set_image(self.btn_resume_img_hover)
             resume_btn.on_press_left = lambda : resume_btn.set_image(self.btn_resume_img_clicked)
             resume_btn.on_hover_exit = lambda : resume_btn.set_image(self.btn_resume_img)
             resume_btn.on_click = lambda : self.manager.resume()
 
 
             exit_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_exit_img).center_x(pn).center_y(pn).move((-150,0))
+            exit_btn.on_hover_enter = lambda : exit_btn.set_image(self.btn_exit_img_hover)
             exit_btn.on_press_left = lambda : exit_btn.set_image(self.btn_exit_img_clicked)
             exit_btn.on_hover_exit = lambda : exit_btn.set_image(self.btn_exit_img)
             exit_btn.on_click = lambda : self.manager.home()
