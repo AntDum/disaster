@@ -1,23 +1,29 @@
-from src.disaster import Fire, Tornado, Earthquake, Tsunami
-from project_od.gui import GUIComponent, Label
-from option import CARD_WIDTH, CARD_HEIGHT, NORMAL_FONT
+from src.disaster import Fire, Flood, Meteor, Tornado, Earthquake, Tsunami, Volcano
+from project_od.gui import GUIComponent, Label, THEME_WHITE
+from option import *
 from src.ressources import import_card
-
+import pygame as pg
 
 class Card(GUIComponent):
     def __init__(self,manager,pos = (0,0), quantity = 1, **kwargs) -> None:
         super().__init__(pos,(CARD_WIDTH, CARD_HEIGHT), **kwargs)
         self.quantity = quantity
         self.manager = manager
+        theme = THEME_WHITE
+        theme.border_radius = 8
+        self.selected = False
+        self.dot = GUIComponent((pos[0]+(CARD_WIDTH*0.5)//10, pos[1]+((CARD_HEIGHT*17.5)//20)), (CARD_WIDTH//10, CARD_HEIGHT//10), theme=theme)
         self.label_quantity = Label((pos[0]+((CARD_WIDTH*7)//10),pos[1]+((CARD_HEIGHT*8)//10)), str(quantity), NORMAL_FONT, text_color=(200,0,0))
 
     def draw(self, screen):
         super().draw(screen)
         self.label_quantity.draw(screen)
+        self.dot.draw(screen)
 
     def update(self):
         super().update()
         self.label_quantity.update()
+        self.dot.update()
 
     def preview(self, x, y):
         return []
@@ -35,10 +41,31 @@ class Card(GUIComponent):
     def on_click(self):
         if self.can_be_selected():
             self.manager.set_disaster(self)
+    
+    def on_pre_update(self):
+        if self.selected:
+            self.dot.color = COLOR_SELECTED
+        else:
+            if self.can_be_selected():
+                self.dot.color = COLOR_AVAILABLE
+            else:
+                self.dot.color = COLOR_NO_AVAILABLE
+
+    def on_press(self):
+        if self.can_be_selected() and not self.selected:
+            self.dot.color = COLOR_PRESS
+
+    def on_hover(self):
+        if self.can_be_selected() and not self.selected:
+            self.dot.color = COLOR_HOVER
+
+    def on_focus(self):
+        pass
 
     def move(self, pos):
         super().move(pos)
         self.label_quantity.move(pos)
+        self.dot.move(pos)
 
 class TornadoCard(Card):
 
@@ -74,8 +101,6 @@ class TornadoCard(Card):
     def get(self):
         return Tornado(self.axe, self.pos, self.manager.city)
 
-
-
 class TsunamiCard(Card):
 
     image = import_card("tsunami")
@@ -86,7 +111,6 @@ class TsunamiCard(Card):
 
     def preview(self, x, y):
         city = self.manager.city
-        tsu = None
         if y != -1 and y != city.h:
             if x == -1: # left
                 self.axe = 2
@@ -103,14 +127,30 @@ class TsunamiCard(Card):
     def get(self):
         return Tsunami(self.manager.city, self.axe)
 
-
 class FloodCard(Card):
 
     image = import_card("flood")
 
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
         super().__init__(manager, pos, quantity, **kwargs, image=self.image)
+        self.axe = 0
 
+    def preview(self, x, y):
+        city = self.manager.city
+        if y != -1 and y != city.h:
+            if x == -1: # left
+                self.axe = 2
+            elif x == city.w: # right
+                self.axe = 0
+        elif x != -1 and x != city.w:
+            if y == -1: # up
+                self.axe = 3
+            elif y == city.h: # down
+                self.axe = 1
+        return self.get().preview()
+    
+    def get(self):
+        return Flood(self.manager.city, self.axe)
 
 class FireCard(Card):
 
@@ -140,5 +180,30 @@ class EarthquakeCard(Card):
         return Earthquake(self.manager.city)
 
 class MeteorCard(Card):
+
+    image = import_card("meteor")
+
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
-        super().__init__(manager, pos, quantity, **kwargs)
+        super().__init__(manager, pos, quantity, image=self.image, **kwargs)
+
+    def preview(self, x, y):
+        self.pos = (x,y)
+        return self.get().preview()
+
+    def get(self):
+        return Meteor(self.manager.city, self.pos)
+
+class VolcanoCard(Card):
+
+    image = import_card("volcano")
+
+    def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
+        super().__init__(manager, pos, quantity, image=self.image, **kwargs)
+
+    def preview(self, x, y):
+        self.pos = (x,y)
+        return [j for i in self.get().preview() for j in i]
+        
+
+    def get(self):
+        return Volcano(self.manager.city, self.pos)

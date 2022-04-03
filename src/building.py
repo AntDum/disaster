@@ -46,6 +46,9 @@ class Case:
             return isinstance(disaster, tuple(self.dammagable))
         else:
             return False
+    
+    def alive(self):
+        return not self.is_destroyed
 
     
 class NoBuilding(Case):
@@ -85,6 +88,7 @@ class FireStation(Case):
         super().__init__(manager,  import_tile("firefighters"))
         self.blocked = []
         self.protected = [Fire, Earthquake]
+        manager.city.fire_station.append(self)
         
 
 class Dyke(Case):
@@ -98,3 +102,4 @@ class Forum(Case):
         super().__init__(manager,  import_tile("Mairie"))
         self.blocked = []
         self.protected = [Fire, Earthquake]
+        manager.city.forum.append(self)

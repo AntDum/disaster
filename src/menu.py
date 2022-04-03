@@ -113,13 +113,11 @@ class Menu:
                 y = Y[i//len(X)]
 
                 btn = Button((x,y), (BUTTON_LENGTH, BUTTON_LENGTH), LARGE_FONT, str(i+1), image=self.btn_level).center_text()
-                btn._i = i
-                btn.on_hover_enter = lambda : btn_list[i].set_image(self.btn_level_hover)
-                btn.on_hover_exit = lambda : btn_list[i].set_image(self.btn_level)
-                btn.on_press_left = lambda : btn_list[i].set_image(self.btn_level_press)
+                btn.on_hover_enter = (lambda j: (lambda : btn_list[j].set_image(self.btn_level_hover)))(i)
+                btn.on_hover_exit = (lambda j : (lambda : btn_list[j].set_image(self.btn_level)))(i)
+                btn.on_press_left = (lambda j: (lambda : btn_list[j].set_image(self.btn_level_press)))(i)
 
-                btn.on_click = lambda : print(i)
-                # btn.on_click = lambda : self.manager.play(i+1)
+                btn.on_click = (lambda j : (lambda : self.manager.play(j)))(i+1)
                 btn_list.append(btn)
 
             pn.add(*btn_list)

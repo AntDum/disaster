@@ -1,4 +1,4 @@
-from option import CITY_PADDING, TILE_SIZE
+from option import CITY_PADDING_X, CITY_PADDING_Y, TILE_SIZE
 from project_od.utils import clamp
 
 
@@ -11,6 +11,8 @@ class City:
         self.w = 0
         self.h = 0
         self.padding = [0,0]
+        self.fire_station = []
+        self.forum = []
 
 
     def draw(self, screen):
@@ -67,8 +69,8 @@ class City:
         self.preview_destroy.add(pos)
 
     def cursor_to_grid(self, x, y):
-        x -= CITY_PADDING
-        y -= CITY_PADDING
+        x -= CITY_PADDING_X
+        y -= CITY_PADDING_Y
         x //= TILE_SIZE
         y //= TILE_SIZE
         x = clamp(x, -1, self.w)
@@ -77,4 +79,10 @@ class City:
         return x,y
 
     def grid_to_screen(self, pos):
-        return self.padding[0] + CITY_PADDING + pos[0]*(TILE_SIZE + 1), self.padding[1] + CITY_PADDING+ pos[1]*(TILE_SIZE + 1)
+        return self.padding[0] + CITY_PADDING_X + pos[0]*(TILE_SIZE + 1), self.padding[1] + CITY_PADDING_Y + pos[1]*(TILE_SIZE + 1)
+
+    def has_fire_man(self):
+        return any([case.alive() for case in self.fire_station])
+    
+    def has_forum(self):
+        return any([case.alive() for case in self.forum])

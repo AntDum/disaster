@@ -3,17 +3,24 @@ import pygame.image as img
 import pygame as pg
 import os
 from random import random
-from option import DISASTER_DURATION, DISASTER_SPEED, TILE_SIZE
+from option import ANIMATION_SPEED, DISASTER_DURATION, DISASTER_SPEED, TILE_SIZE
+from src.ressources import import_disaster
 
 
 class Disaster:
     def __init__(self, city) -> None:
         self.timer = 0
+        self.anim_time = 0
         self.city = city
         self.finish = False
+        self.anim_frame_count = 0
 
     def update(self, dt):
         self.timer += dt
+        self.anim_time += dt
+        if self.anim_time >= ANIMATION_SPEED:
+            self.anim_time = 0
+            self.anim_frame_count += 1
     
     def launch(self):
         pass
@@ -26,7 +33,8 @@ class Disaster:
 
 class Tornado(Disaster):
 
-    image = img.load(os.path.join("res","disaster","tornado1.png"))
+    images = [import_disaster("tornado1"),
+                import_disaster("tornado2")]
 
 
     def __init__(self, axe, pos, city) -> None:
@@ -82,7 +90,7 @@ class Tornado(Disaster):
         self.moved = 0
 
     def draw(self, screen):
-        screen.blit(self.image, self.city.grid_to_screen(self.pos))
+        screen.blit(self.images[self.anim_frame_count%2], self.city.grid_to_screen(self.pos))
 
     def update(self, dt):
         super().update(dt)
@@ -92,7 +100,9 @@ class Tornado(Disaster):
                 self.finish = True
 
 class Fire(Disaster):
-    image = img.load(os.path.join("res","disaster","fire1.png"))
+
+    images = [import_disaster("fire1"),
+                import_disaster("fire2")]
 
     def __init__(self, city, pos) -> None:
         super().__init__(city)
@@ -100,11 +110,16 @@ class Fire(Disaster):
 
     def preview(self):
         l = []
-        for i in range(2):
-            for j in range(2):
-                x, y = self.pos[0] + i, self.pos[1] + j
-                if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
-                    l.append((x, y))
+        if self.city.has_fire_man():
+            x, y = self.pos[0], self.pos[1]
+            if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+                l.append((x, y))
+        else:
+            for i in range(2):
+                for j in range(2):
+                    x, y = self.pos[0] + i, self.pos[1] + j
+                    if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+                        l.append((x, y))
         return l
     
     def launch(self):
@@ -113,18 +128,74 @@ class Fire(Disaster):
     def update(self, dt):
         super().update(dt)
         if self.timer >= DISASTER_DURATION:
+            for pos in self.next:
+                case = self.city[pos]
+                if(not case.is_protected(self)):
+                    case.destroy()
             self.finish = True
 
     def draw(self, screen):
         for pos in self.next:
-            screen.blit(self.image, self.city.grid_to_screen(pos))
+            screen.blit(self.images[self.anim_frame_count%2], self.city.grid_to_screen(pos))
 
 class Flood(Disaster):
-    def __init__(self, city) -> None:
+
+    images = [import_disaster("flood1"),
+                import_disaster("flood2")]
+
+    def __init__(self, city, axe) -> None:
         super().__init__(city)
+        self.axe = axe
+
+    def preview(self):
+        l = []
+        if self.axe == 0 and self.city.coast[(self.axe+2)%4]: # left
+            i = self.city.w-1
+            for j in range(self.city.h):
+                pos = (i, j)
+                l.append(pos)
+
+        elif self.axe == 1 and self.city.coast[(self.axe+2)%4]: # top
+            i = self.city.h-1
+            for j in range(self.city.w):
+                pos = (j, i)
+                l.append(pos)
+
+        elif self.axe == 2 and self.city.coast[(self.axe+2)%4]: # right
+            i = 0
+            for j in range(self.city.h):
+                pos = (i, j)
+                l.append(pos)
+
+        elif self.axe == 3 and self.city.coast[(self.axe+2)%4]: # down
+            i = 0
+            for j in range(self.city.w):
+                pos = (j, i)
+                l.append(pos)
+
+        return l
+
+    def launch(self):
+        self.next = self.preview()
+    
+    def update(self, dt):
+        super().update(dt)
+        if self.timer >= DISASTER_DURATION:
+            for pos in self.next:
+                case = self.city[pos]
+                if(not case.is_protected(self)):
+                    case.destroy()
+            self.finish = True
+    
+    def draw(self, screen):
+        for pos in self.next:
+            screen.blit(self.images[self.anim_frame_count%2], self.city.grid_to_screen(pos))
+        
 
 class Tsunami(Disaster):
-    image = img.load(os.path.join("res","disaster","tsunami1.png"))
+
+    images = [import_disaster("tsunami1"),
+                import_disaster("tsunami2")]
 
     def __init__(self, city, axe) -> None:
         super().__init__(city)
@@ -203,7 +274,7 @@ class Tsunami(Disaster):
     def draw(self, screen):
         if self.moved < len(self.next):
             for pos in self.next[self.moved]:
-                screen.blit(self.image, self.city.grid_to_screen(pos))
+                screen.blit(self.images[self.anim_frame_count%2], self.city.grid_to_screen(pos))
         
 
 class Earthquake(Disaster):
@@ -226,3 +297,92 @@ class Earthquake(Disaster):
             self.city.padding = [(random()*TILE_SIZE)//10, (random()*TILE_SIZE)//10]
 
             
+
+class Meteor(Disaster):
+
+    images = [import_disaster("meteor1"),
+                import_disaster("meteor2")]
+
+    def __init__(self, city, pos) -> None:
+        super().__init__(city)
+        self.pos = pos
+
+    def preview(self):
+        l = []
+        x, y = self.pos[0], self.pos[1]
+        if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+            l.append((x, y))
+        return l
+    
+    def launch(self):
+        self.next = self.preview()
+    
+    def update(self, dt):
+        super().update(dt)
+        if self.timer >= DISASTER_DURATION:
+            for pos in self.next:
+                case = self.city[pos]
+                if(not case.is_protected(self)):
+                    case.destroy()
+            self.finish = True
+
+    def draw(self, screen):
+        for pos in self.next:
+            screen.blit(self.images[self.anim_frame_count%2], self.city.grid_to_screen(pos))
+            
+class Volcano(Disaster):
+
+    images = [import_disaster("volcano1"),
+                import_disaster("volcano2")]
+
+    def __init__(self, city, pos) -> None:
+        super().__init__(city)
+        self.pos = pos # (x,y)
+        
+    
+    def move(self):
+        if self.moved >= len(self.next):
+            return False
+        for pos in self.next[self.moved]:
+            case = self.city[pos]
+            if(not case.is_protected(self)):
+                case.destroy()
+        self.moved += 1
+        return True
+
+    def preview(self):
+        f = []
+        s = []
+        x, y = self.pos[0], self.pos[1]
+        if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+            f.append((x, y))
+        x -= 1
+        if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+            s.append((x, y))
+        x += 2
+        if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+            s.append((x, y))
+        x -= 1
+        y -= 1
+        if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+            s.append((x, y))
+        y += 2
+        if x < self.city.w and y < self.city.h and x >= 0 and y >= 0:
+            s.append((x, y))
+        return [f,s]
+    
+    def launch(self):
+        self.next = self.preview()
+        self.moved = 0
+
+    def draw(self, screen):
+        if self.moved < len(self.next):
+            for pos in self.next[self.moved]:
+                screen.blit(self.images[self.anim_frame_count%2], self.city.grid_to_screen(pos))
+
+    def update(self, dt):
+        super().update(dt)
+        if self.timer >= DISASTER_SPEED:
+            self.timer = 0
+            if not self.move():
+                self.finish = True
