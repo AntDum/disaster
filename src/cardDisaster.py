@@ -1,4 +1,4 @@
-from src.disaster import Fire, Tornado, Earthquake
+from src.disaster import Fire, Tornado, Earthquake, Tsunami
 from project_od.gui import GUIComponent, Label
 from option import CARD_WIDTH, CARD_HEIGHT, NORMAL_FONT
 from src.ressources import import_card
@@ -20,7 +20,7 @@ class Card(GUIComponent):
         self.label_quantity.update()
 
     def preview(self, x, y):
-        pass
+        return []
 
     def set_quantity(self, x):
         self.quantity = x
@@ -82,9 +82,26 @@ class TsunamiCard(Card):
 
     def __init__(self,manager, pos=(0, 0), quantity=1) -> None:
         super().__init__(manager,pos, quantity, image = self.image)
+        self.axe = 0
 
     def preview(self, x, y):
-        pass
+        city = self.manager.city
+        tsu = None
+        if y != -1 and y != city.h:
+            if x == -1: # right
+                self.axe = 2
+            elif x == city.w: # left
+                self.axe = 0
+        elif x != -1 and x != city.w:
+            if y == -1: # down
+                self.axe = 3
+            elif y == city.h: # up
+                self.axe = 1
+        tsu = self.get().preview()
+        return [j for i in tsu for j in i]
+    
+    def get(self):
+        return Tsunami(self.manager.city, self.axe)
 
 
 class FloodCard(Card):
@@ -116,8 +133,8 @@ class EarthquakeCard(Card):
     def __init__(self, manager, pos=(0, 0), quantity=1, **kwargs) -> None:
         super().__init__(manager, pos, quantity, **kwargs, image=self.image)
 
-    def preview(self):
-        return Earthquake().preview()
+    def preview(self, x, y):
+        return self.get().preview()
 
     def get(self):
         return Earthquake(self.manager.city)

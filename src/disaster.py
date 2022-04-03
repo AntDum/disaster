@@ -1,3 +1,4 @@
+from shlex import join
 import pygame.image as img
 import pygame as pg
 import os
@@ -129,7 +130,7 @@ class Tsunami(Disaster):
 
     def preview(self):
         l = []
-        if self.axe == 0: # left
+        if self.axe == 0 and self.city.coast[(self.axe+2)%2]: # left
             for j in range(self.city.h):
                 mini_l = []
                 for i in range(self.city.w-1, -1, -1):
@@ -139,7 +140,7 @@ class Tsunami(Disaster):
                         break
                     mini_l.append(pos)
                 l.append(mini_l)
-        elif self.axe == 1: # top
+        elif self.axe == 1 and self.city.coast[(self.axe+2)%2]: # top
             for j in range(self.city.w):
                 mini_l = []
                 for i in range(self.city.h-1, -1, -1):
@@ -149,21 +150,48 @@ class Tsunami(Disaster):
                         break
                     mini_l.append(pos)
                 l.append(mini_l)
-        elif self.axe == 2: # right
-            for i in range(self.city.w):
-                pos = (i, self.pos[1])
-                case = self.city[pos]
-                if case.block(self):
-                    break
-                l.append(pos)
-        elif self.axe == 3: # down
-            for i in range(self.city.h):
-                pos = (self.pos[0], i)
-                case = self.city[pos]
-                if case.block(self):
-                    break
-                l.append(pos)
+        elif self.axe == 2 and self.city.coast[(self.axe+2)%2]: # right
+            for j in range(self.city.h):
+                mini_l = []
+                for i in range(self.city.w):
+                    pos = (i, j)
+                    case = self.city[pos]
+                    if case.block(self):
+                        break
+                    mini_l.append(pos)
+                l.append(mini_l)
+        elif self.axe == 3 and self.city.coast[(self.axe+2)%2]: # down
+            for j in range(self.city.w):
+                mini_l = []
+                for i in range(self.city.h):
+                    pos = (j, i)
+                    case = self.city[pos]
+                    if case.block(self):
+                        break
+                    mini_l.append(pos)
+                l.append(mini_l)
         return l
+
+    def launch(self):
+        self.next = self.preview()
+        self.moved = 0
+
+    def move(self):
+        if self.moved >= len(self.next):
+            return False
+        for pos in self.next[self.moved]:
+            case = self.city[pos]
+            if(not case.is_protected(self)):
+                case.destroy()
+        self.moved += 1
+        return True
+    
+    def update(self, dt):
+        super().update(dt)
+        if self.timer >= DISASTER_SPEED:
+            self.timer = 0
+            if not self.move():
+                self.finish = True
 
 class Earthquake(Disaster):
     def __init__(self, city) -> None:

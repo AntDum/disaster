@@ -23,6 +23,10 @@ BUTTON_HEIGHT = 100
 DISASTER_SPEED = 0.5 # second
 DISASTER_DURATION = 1 # second
 
+PANEL_WIDTH = 800
+PANEL_HEIGHT = 400
+
+
 SMALL_FONT = font.SysFont("Agency FB", 16)
 NORMAL_FONT = font.SysFont("Agency FB", 26)
 LARGE_FONT = font.SysFont("Agency FB", 46)

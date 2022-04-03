@@ -4,6 +4,8 @@ from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:
     value = 5
+    destroy_image = import_tile("destruct")
+    background_image = import_tile("pave")
     def __init__(self, manager, image) -> None:
         self.protected = []
         self.blocked = []
@@ -12,14 +14,16 @@ class Case:
         self.is_destroyed = False
 
     def draw(self, screen, x, y):
-        screen.blit(self.image, (x,y))
+        screen.blit(self.background_image, (x,y))
+        if self.image:
+            screen.blit(self.image, (x,y))
 
     def update(self, dt=0):
         pass
 
     def destroy(self): # Détruit le batiment.
         if not self.is_destroyed:
-            self.image.fill((255,255,0))
+            self.image = self.destroy_image
             self.manager.score += self.value
             self.is_destroyed = True
             print(self.manager.score)
@@ -41,7 +45,7 @@ class NoBuilding(Case):
 
     value = 0
     def __init__(self, manager) -> None:
-        super().__init__(manager, import_tile("pave"))
+        super().__init__(manager, None)
 
         self.is_destroyed = True
     
