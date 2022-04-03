@@ -61,9 +61,7 @@ class GameManager:
         for line in setup['grid']:
             row = []
             for tile in line:
-                if tile == '0':
-                    row.append(NoBuilding(self))
-                elif tile == '1':
+                if tile == '1':
                     row.append(House(self))
                 elif tile == '2':
                     row.append(FireStation(self))
@@ -75,6 +73,8 @@ class GameManager:
                     row.append(Forum(self))
                 elif tile == '6':
                     row.append(Church(self))
+                else :
+                    row.append(NoBuilding(self))
             self.city.grid.append(row)
 
         self.city.w = setup["size"]
