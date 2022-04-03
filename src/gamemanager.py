@@ -2,9 +2,13 @@ from option import *
 from src.map import City
 from src.building import *
 from project_od.gui import Panel,Label
+<<<<<<< HEAD
 from src.cardDisaster import *
 from src.level import Level
 
+=======
+from src.cardDisaster import EarthquakeCard, FireCard, TornadoCard
+>>>>>>> 0686b536ec152441de9e575d8cc054c64eaddd35
 
 class GameManager:
     def __init__(self, screen) -> None:
@@ -30,6 +34,7 @@ class GameManager:
             self.disaster_selected = disaster
 
     def set_level(self, level):
+<<<<<<< HEAD
         self.city = City()
         self.l = Level(level)
         setup = self.l.report()
@@ -83,6 +88,37 @@ class GameManager:
 
         self.score = 0
 
+=======
+        if level == 1:
+            self.city = City()
+            w = 4
+            h = 4
+            self.city.grid = [[House(self) for _ in range(w)] for _ in range(h)]
+            self.city.w = w
+            self.city.h = h
+            self.city.grid[0][0] = NoBuilding(self)
+            self.city.grid[1][0] = NoBuilding(self)
+            self.city.grid[3][0] = NoBuilding(self)
+            self.city.grid[0][2] = NoBuilding(self)
+            self.city.grid[3][2] = NoBuilding(self)
+
+            pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
+            #TODO : Automatiser les imports de cartes.
+            jor1 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING),2)
+            jor2 = EarthquakeCard(self,(0,CARD_PADDING),2)
+            jor3 = FireCard(self,(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),2)
+
+            self.score_label = Label((SIDE_POS/2-30,10),"Score : 0",NORMAL_FONT)
+
+            pn.add(jor1, jor2, jor3)
+
+            pn.move((SIDE_POS, 0))
+
+            self.side_bar = pn
+
+            self.score = 0
+    
+>>>>>>> 0686b536ec152441de9e575d8cc054c64eaddd35
     def update(self, screen, dt):
         self.score_label.set_text("Score : "+str(self.score))
         self.side_bar.update()
@@ -98,13 +134,14 @@ class GameManager:
                     for p in pos:
                         self.city.add_preview(p)
 
-                    if pg.mouse.get_pressed()[0]:
-                        self.disaster = self.disaster_selected.get()
-                        self.disaster_launch = True
-                        self.disaster.launch()
-                        self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
-                        if not self.disaster_selected.can_be_selected():
-                            self.disaster_selected = None
+                    if len(pos) > 0:
+                        if pg.mouse.get_pressed()[0]:
+                            self.disaster = self.disaster_selected.get()
+                            self.disaster_launch = True
+                            self.disaster.launch()
+                            self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
+                            if not self.disaster_selected.can_be_selected():
+                                self.disaster_selected = None
         else:
             self.disaster.update(dt)
             if self.disaster.finish:
@@ -115,10 +152,16 @@ class GameManager:
         self.side_bar.draw(screen)
 
         if self.disaster_launch:
+<<<<<<< HEAD
             x, y = self.city.grid_to_screen(self.disaster.pos)
             self.disaster.draw(screen, x, y)
 
 
+=======
+            self.disaster.draw(screen)
+    
+        
+>>>>>>> 0686b536ec152441de9e575d8cc054c64eaddd35
 
     def play(self):
         self.screen.make_background((35,35,35))

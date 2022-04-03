@@ -41,7 +41,7 @@ class NoBuilding(Case):
 
     value = 0
     def __init__(self, manager) -> None:
-        super().__init__(manager, import_tile("sand"))
+        super().__init__(manager, import_tile("pave"))
 
         self.is_destroyed = True
     
@@ -51,7 +51,7 @@ class House(Case):
     value = 20
     
     def __init__(self, manager) -> None:
-        super().__init__(manager, import_tile("house"))
+        super().__init__(manager, import_tile("bulding"))
 
 class Bunker(Case):
 
