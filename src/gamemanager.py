@@ -51,7 +51,7 @@ class GameManager:
     def load_level(self, level=-1):
         if level != -1:
             self.current_level = level
-        self.city = City()
+        self.city = City(self)
         self.l = Level(self.current_level)
         setup = self.l.report()
 
@@ -160,14 +160,10 @@ class GameManager:
             self.disaster.draw(screen)
 
     def finish_level(self):
-        if self.city.has_forum():
-            print("Lose")
-        else:
-            print("Win")
-        print(self.score)
         self.game_finish = True
 
-
+    def current_win(self):
+        return not self.city.has_forum, self.score
 
     def play(self, level=-1):
         self.screen.background = self.game_background
@@ -175,6 +171,9 @@ class GameManager:
         self.game_finish = False
         self.selecting = False
         self.load_level(level)
+    
+    def reset(self):
+        self.play(self.current_level)
     
     def next_level(self):
         self.play(self.current_level + 1)

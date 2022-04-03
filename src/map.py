@@ -1,9 +1,10 @@
+from src.building import NoBuilding
 from option import CITY_PADDING_X, CITY_PADDING_Y, TILE_SIZE
 from project_od.utils import clamp
 
 
 class City:
-    def __init__(self) -> None:
+    def __init__(self, manager) -> None:
         self.grid = []
         self.coast = [True, True, True, True] #Left, Up, Right, Down
         self.preview_disaster = set()
@@ -13,6 +14,7 @@ class City:
         self.padding = [0,0]
         self.fire_station = []
         self.forum = []
+        self.manager = manager
 
 
     def draw(self, screen):
@@ -53,7 +55,11 @@ class City:
                 case.update(dt)
 
     def __getitem__(self, i):
-        return self.grid[i[1]][i[0]]
+        if 0 <= i[1] < len(self.grid) and 0 <= i[0] < len(self.grid[i[1]]):
+            return self.grid[i[1]][i[0]]
+        else:
+            return NoBuilding(self.manager)
+
     
     def __setitem__(self, i, e):
         self.grid[i[1]][i[0]] = e
