@@ -117,8 +117,8 @@ class GameManager:
 
         if self.disaster_launch:
             self.disaster.draw(screen)
-    
-        
+
+
 
     def play(self):
         self.screen.make_background((35,35,35))
