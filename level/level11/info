@@ -1,5 +1,5 @@
 Namur
 100,200,300
-tsunami,1;tornado,0;volcano,0;fire,0;flood,0;meteor,0
+tsunami,1;meteor,3
 45
--1
+1,2,3

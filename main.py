@@ -14,7 +14,7 @@ clock = pg.time.Clock()
 
 gameManager = GameManager(screen)
 menu = Menu(gameManager)
-
+()
 # Skip menu
 
 # gameManager.set_level(1)
