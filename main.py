@@ -3,7 +3,11 @@ from src.gamemanager import GameManager
 from src.menu import Menu
 from project_od.screen import SmartScreen
 from option import *
+from pygame.locals import*
 
+pygame.mixer.init()
+musique = pygame.mixer.Sound("res/X2Download.com - Art of Silence - Dramatic _ Cinematic [Free to use] (320 kbps).mp3")
+musique.play(-1,0,0)
 
 pg.init()
 
