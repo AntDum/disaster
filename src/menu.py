@@ -1,8 +1,6 @@
 from project_od.gui import Panel, Button, Label,GUIComponent
 from option import *
 import pygame as pg
-import pygame.image as img
-from pygame.transform import scale
 from src.ressources import import_button,import_background
 
 class Menu:

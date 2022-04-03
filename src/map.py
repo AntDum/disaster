@@ -10,16 +10,40 @@ class City:
         self.preview_destroy = set()
         self.w = 0
         self.h = 0
+        self.padding = [0,0]
 
 
     def draw(self, screen):
+        # Dessine toute les cases
         for y, line in enumerate(self.grid):
             for x, case in enumerate(line):
                 case.draw(screen, *self.grid_to_screen((x,y)))
+
+        # Dessine les cotes
+        if self.coast[0]:
+            for y in range(self.h):
+                screen.draw_rect((self.grid_to_screen((-1, y)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+        if self.coast[1]:
+            for x in range(self.w):
+                screen.draw_rect((self.grid_to_screen((x, -1)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+        if self.coast[2]:
+            for y in range(self.h):
+                screen.draw_rect((self.grid_to_screen((self.w, y)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+        if self.coast[3]:
+            for x in range(self.w):
+                screen.draw_rect((self.grid_to_screen((x, self.h)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+        
+        # Dessine les previews
         for x,y in self.preview_disaster:
             x, y = self.grid_to_screen((x,y))
             screen.draw_rect(((x + TILE_SIZE//4, y + TILE_SIZE//4),
                                     (TILE_SIZE//2, TILE_SIZE//2)), (0,0,255))
+
+        # Dessine les previews destroy
+        for x,y in self.preview_destroy:
+            x, y = self.grid_to_screen((x,y))
+            screen.draw_rect(((x + TILE_SIZE//4, y + TILE_SIZE//4),
+                                    (TILE_SIZE//2, TILE_SIZE//2)), (0,255,255))
 
     def update(self, dt):
         for line in self.grid:
@@ -53,4 +77,4 @@ class City:
         return x,y
 
     def grid_to_screen(self, pos):
-        return CITY_PADDING + pos[0]*(TILE_SIZE + 1), CITY_PADDING+ pos[1]*(TILE_SIZE + 1)
+        return self.padding[0] + CITY_PADDING + pos[0]*(TILE_SIZE + 1), self.padding[1] + CITY_PADDING+ pos[1]*(TILE_SIZE + 1)

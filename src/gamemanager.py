@@ -2,7 +2,7 @@ from option import *
 from src.map import City
 from src.building import *
 from project_od.gui import Panel,Label
-from src.cardDisaster import EarthquakeCard, TornadoCard
+from src.cardDisaster import EarthquakeCard, FireCard, TornadoCard
 
 class GameManager:
     def __init__(self, screen) -> None:
@@ -43,10 +43,11 @@ class GameManager:
             #TODO : Automatiser les imports de cartes.
             jor1 = TornadoCard(self,(CARD_PADDING+CARD_WIDTH,CARD_PADDING),2)
             jor2 = EarthquakeCard(self,(0,CARD_PADDING),2)
+            jor3 = FireCard(self,(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),2)
 
             self.score_label = Label((SIDE_POS/2-30,10),"Score : 0",NORMAL_FONT)
 
-            pn.add(jor1, jor2)
+            pn.add(jor1, jor2, jor3)
 
             pn.move((SIDE_POS, 0))
 
@@ -69,13 +70,14 @@ class GameManager:
                     for p in pos:
                         self.city.add_preview(p)
 
-                    if pg.mouse.get_pressed()[0]:
-                        self.disaster = self.disaster_selected.get()
-                        self.disaster_launch = True
-                        self.disaster.launch()
-                        self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
-                        if not self.disaster_selected.can_be_selected():
-                            self.disaster_selected = None
+                    if len(pos) > 0:
+                        if pg.mouse.get_pressed()[0]:
+                            self.disaster = self.disaster_selected.get()
+                            self.disaster_launch = True
+                            self.disaster.launch()
+                            self.disaster_selected.set_quantity(self.disaster_selected.quantity - 1)
+                            if not self.disaster_selected.can_be_selected():
+                                self.disaster_selected = None
         else:
             self.disaster.update(dt)
             if self.disaster.finish:
@@ -86,8 +88,7 @@ class GameManager:
         self.side_bar.draw(screen)
 
         if self.disaster_launch:
-            x, y = self.city.grid_to_screen(self.disaster.pos)
-            self.disaster.draw(screen, x, y)
+            self.disaster.draw(screen)
     
         
 
