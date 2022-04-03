@@ -130,9 +130,9 @@ class Tsunami(Disaster):
     def preview(self):
         l = []
         if self.axe == 0: # left
-            for i in range(self.city.w-1, -1, -1):
+            for j in range(self.city.h):
                 mini_l = []
-                for j in range(self.city.h):
+                for i in range(self.city.w-1, -1, -1):
                     pos = (i, j)
                     case = self.city[pos]
                     if case.block(self):
@@ -140,12 +140,15 @@ class Tsunami(Disaster):
                     mini_l.append(pos)
                 l.append(mini_l)
         elif self.axe == 1: # top
-            for i in range(self.city.h-1, -1, -1):
-                pos = (self.pos[0], i)
-                case = self.city[pos]
-                if case.block(self):
-                    break
-                l.append(pos)
+            for j in range(self.city.w):
+                mini_l = []
+                for i in range(self.city.h-1, -1, -1):
+                    pos = (j, i)
+                    case = self.city[pos]
+                    if case.block(self):
+                        break
+                    mini_l.append(pos)
+                l.append(mini_l)
         elif self.axe == 2: # right
             for i in range(self.city.w):
                 pos = (i, self.pos[1])
