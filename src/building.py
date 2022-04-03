@@ -3,7 +3,7 @@ from src.disaster import Earthquake, Fire, Flood, Tornado, Tsunami, Volcano
 from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:
-    value = 5
+    value = 10
     destroy_image = import_tile("ruins")
     background_image = import_tile("cobble")
     def __init__(self, manager, image) -> None:
@@ -62,8 +62,6 @@ class NoBuilding(Case):
 
 class House(Case):
 
-    value = 20
-
     def __init__(self, manager) -> None:
         super().__init__(manager, import_tile("house"))
         self.blocked = []
@@ -71,7 +69,7 @@ class House(Case):
 
 class Bunker(Case):
 
-    value = 10
+    value = 30
 
     def __init__(self, manager) -> None:
         super().__init__(manager, import_tile("Bunker"))
@@ -91,12 +89,18 @@ class FireStation(Case):
         manager.city.fire_station.append(self)
 
 class Dyke(Case):
+
+    value = 5
+
     def __init__(self, manager) -> None:
         super().__init__(manager,  import_tile("Dig"))
         self.blocked = [Tsunami, Flood]
         self.protected = [Tsunami, Flood,Tornado]
 
 class Forum(Case):
+
+    value = 20
+
     def __init__(self, manager) -> None:
         super().__init__(manager,  import_tile("Mairie"))
         self.blocked = []

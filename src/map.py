@@ -4,9 +4,9 @@ from project_od.utils import clamp
 
 
 class City:
-    def __init__(self, manager) -> None:
+    def __init__(self, manager, coasts) -> None:
         self.grid = []
-        self.coast = [True, True, True, True] #Left, Up, Right, Down
+        self.coast = coasts #Left, Up, Right, Down
         self.preview_disaster = set()
         self.preview_destroy = set()
         self.w = 0
@@ -36,7 +36,7 @@ class City:
         if self.coast[3]:
             for x in range(self.w):
                 screen.draw_rect((self.grid_to_screen((x, self.h)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
-        
+
         # Dessine les previews
         for x,y in self.preview_disaster:
             x, y = self.grid_to_screen((x,y))
@@ -60,7 +60,7 @@ class City:
         else:
             return NoBuilding(self.manager)
 
-    
+
     def __setitem__(self, i, e):
         self.grid[i[1]][i[0]] = e
 
@@ -70,7 +70,7 @@ class City:
 
     def add_preview(self, pos):
         self.preview_disaster.add(pos)
-    
+
     def add_destroy(self, pos):
         self.preview_destroy.add(pos)
 
@@ -89,6 +89,6 @@ class City:
 
     def has_fire_man(self):
         return any([case.alive() for case in self.fire_station])
-    
+
     def has_forum(self):
         return any([case.alive() for case in self.forum])

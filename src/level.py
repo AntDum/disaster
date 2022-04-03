@@ -28,10 +28,11 @@ class Level:
             self.score_tresholds = f[1].split(",")
             self.cards = [c.split(',') for c in f[2].split(";")]
             self.best_score = int(f[3])
+            self.coasts = f[4].split(",")
 
 
     def report(self):
-        return {"best_score":self.best_score,"tresholds":self.score_tresholds,"name":self.name, "cards":self.cards, "grid":self.grid, "size":self.size}
+        return {"best_score":self.best_score,"tresholds":self.score_tresholds,"name":self.name, "cards":self.cards, "grid":self.grid, "size":self.size, "coasts" : self.coasts}
 
     def save_level(self,score):
         self.best_score = max(self.best_score,score)
