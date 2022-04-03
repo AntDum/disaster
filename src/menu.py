@@ -21,9 +21,9 @@ class Menu:
 
     big_planche = import_button("big_planche",(int(BUTTON_WIDTH*2.4),int(BUTTON_HEIGHT*2)))
 
-    btn_level = import_button()
-    btn_level_hover = import_button()
-    btn_level_press = import_button()
+    btn_level = import_button("level_button", (BUTTON_LENGTH, BUTTON_LENGTH))
+    btn_level_hover = import_button("level_button_hover", (BUTTON_LENGTH, BUTTON_LENGTH))
+    btn_level_press = import_button("level_button_press", (BUTTON_LENGTH, BUTTON_LENGTH))
 
     pause_bckg = import_button("big_planche",(PANEL_WIDTH,PANEL_HEIGHT))
     bckg = import_background("main_menu")
