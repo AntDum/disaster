@@ -1,9 +1,13 @@
+from src.ressources import import_disaster, import_tile
 from src.building import NoBuilding
-from option import CITY_PADDING_X, CITY_PADDING_Y, TILE_SIZE
+from option import CITY_PADDING_X, CITY_PADDING_Y, TILE_SIZE, WATER_COLOR
 from project_od.utils import clamp
 
 
 class City:
+    water = import_tile("eau")
+    preview_image = import_disaster("preview")
+
     def __init__(self, manager) -> None:
         self.grid = []
         self.coast = [True, True, True, True] #Left, Up, Right, Down
@@ -26,28 +30,25 @@ class City:
         # Dessine les cotes
         if self.coast[0]:
             for y in range(self.h):
-                screen.draw_rect((self.grid_to_screen((-1, y)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+                screen.draw_rect((self.grid_to_screen((-1, y)), (TILE_SIZE, TILE_SIZE)), WATER_COLOR)
         if self.coast[1]:
             for x in range(self.w):
-                screen.draw_rect((self.grid_to_screen((x, -1)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+                screen.draw_rect((self.grid_to_screen((x, -1)), (TILE_SIZE, TILE_SIZE)), WATER_COLOR)
         if self.coast[2]:
             for y in range(self.h):
-                screen.draw_rect((self.grid_to_screen((self.w, y)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+                screen.draw_rect((self.grid_to_screen((self.w, y)), (TILE_SIZE, TILE_SIZE)), WATER_COLOR)
         if self.coast[3]:
             for x in range(self.w):
-                screen.draw_rect((self.grid_to_screen((x, self.h)), (TILE_SIZE, TILE_SIZE)), (0,191,255))
+                screen.draw_rect((self.grid_to_screen((x, self.h)), (TILE_SIZE, TILE_SIZE)), WATER_COLOR)
         
         # Dessine les previews
         for x,y in self.preview_disaster:
             x, y = self.grid_to_screen((x,y))
-            screen.draw_rect(((x + TILE_SIZE//4, y + TILE_SIZE//4),
-                                    (TILE_SIZE//2, TILE_SIZE//2)), (0,0,255))
-
+            screen.blit(self.preview_image, ((x, y)))
         # Dessine les previews destroy
         for x,y in self.preview_destroy:
             x, y = self.grid_to_screen((x,y))
-            screen.draw_rect(((x + TILE_SIZE//4, y + TILE_SIZE//4),
-                                    (TILE_SIZE//2, TILE_SIZE//2)), (0,255,255))
+            screen.blit(self.preview_image, ((x, y)))
 
     def update(self, dt):
         for line in self.grid:

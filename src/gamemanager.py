@@ -1,21 +1,25 @@
 from option import *
+from project_od.gui.component import Button
 from src.map import City
 from src.building import *
 from project_od.gui import Panel,Label
 from src.cardDisaster import *
 from src.level import Level
-from src.ressources import import_background
+from src.ressources import import_background, import_button
 
 
 class GameManager:
     game_background = import_background("background_game")
-
+    menu_background = import_background("main_menu")
+    end_game_background = import_background("end_game")
+    small_planche = import_button("big_planche", (BUTTON_WIDTH, BUTTON_HEIGHT))
 
     def __init__(self, screen) -> None:
         self.in_game = False
         self.game_finish = False
         self.selecting = False
         self.paused = False
+        self.end_game = False
         self.shutdown = False
         self.how_to = False
 
@@ -110,8 +114,8 @@ class GameManager:
 
             self.disaster_count += int(qte)
 
-        self.score_label = Label((SIDE_POS_X/2-30,10),"Score : 0",NORMAL_FONT)
-
+        self.score_label = Button((SIDE_POS_X/2-30,-20),(BUTTON_WIDTH, BUTTON_HEIGHT), NORMAL_FONT_BOLD, "Score : 0", text_color=(255,255,255)).center_text()
+        self.score_label.set_image(self.small_planche)
         pn.add(*self.cards)
 
         pn.move((SIDE_POS_X, SIDE_POS_Y))
@@ -160,10 +164,11 @@ class GameManager:
             self.disaster.draw(screen)
 
     def finish_level(self):
+        self.screen.background = self.menu_background
         self.game_finish = True
 
     def current_win(self):
-        return not self.city.has_forum, self.score
+        return not self.city.has_forum(), self.score
 
     def play(self, level=-1):
         self.screen.background = self.game_background
@@ -176,12 +181,18 @@ class GameManager:
         self.play(self.current_level)
     
     def next_level(self):
-        self.play(self.current_level + 1)
+        if self.current_level + 1 > NUMBER_LEVEL:
+            self.screen.background = self.end_game_background
+            self.end_game = True
+        else:
+            self.play(self.current_level + 1)
 
     def pause(self):
+        self.screen.background = self.menu_background
         self.paused = True
 
     def resume(self):
+        self.screen.background = self.game_background
         self.paused = False
 
     def quit(self):

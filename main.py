@@ -3,6 +3,7 @@ from src.gamemanager import GameManager
 from src.menu import Menu
 from project_od.screen import SmartScreen
 from option import *
+import os
 
 
 pg.init()
@@ -19,6 +20,9 @@ menu = Menu(gameManager)
 # gameManager.set_level(1)
 # gameManager.in_game = False
 
+pg.mixer.init()
+music = pg.mixer.Sound(os.path.join("res","soundtrack","music.mp3"))
+music.play(-1,0,0)
 
 while not gameManager.shutdown:
     dt = clock.tick(30) / 1000
@@ -36,21 +40,21 @@ while not gameManager.shutdown:
                         gameManager.pause()
 
     screen.draw_background()
-
-    if gameManager.in_game:
-        if gameManager.paused:
-            menu.pause(screen)
-        elif gameManager.game_finish:
-            menu.end_game(screen)
+    if not gameManager.end_game:
+        if gameManager.in_game:
+            if gameManager.paused:
+                menu.pause(screen)
+            elif gameManager.game_finish:
+                menu.end_game(screen)
+            else:
+                gameManager.update(screen, dt)
         else:
-            gameManager.update(screen, dt)
-    else:
-        if gameManager.selecting:
-            menu.menu_selector(screen)
-        elif gameManager.how_to:
-            menu.menu_how_to_play(screen)
-        else:
-            menu.home(screen)
+            if gameManager.selecting:
+                menu.menu_selector(screen)
+            elif gameManager.how_to:
+                menu.menu_how_to_play(screen)
+            else:
+                menu.home(screen)
 
     screen.display_update()
 
