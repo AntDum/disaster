@@ -85,6 +85,9 @@ class Menu:
 
         self.panel.update()
         self.panel.draw(screen)
+    
+    def page_zero(self):
+        self.page = 0
 
     def pause(self, screen):
         if self.page != 1:
@@ -192,7 +195,7 @@ class Menu:
         self.panel.draw(screen)
 
     def end_game(self, screen):
-        if True:
+        if self.page != 4:
             self.page = 4
             self.background = self.bckg
 
@@ -206,11 +209,18 @@ class Menu:
             if win:
                 resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "Next Level", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
                 resume_btn.label.move((0,int(BUTTON_HEIGHT*0.8)))
-                resume_btn.on_click = lambda : self.manager.next_level()
+                def ok():
+                    self.manager.next_level() 
+                    self.page_zero()  
+                resume_btn.on_click = lambda : ok()
             else:
                 resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "Replay", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
                 resume_btn.label.move((0,int(BUTTON_HEIGHT*0.8)))
                 resume_btn.on_click = lambda : self.manager.reset()
+                def ok():
+                    self.manager.reset() 
+                    self.page_zero()  
+                resume_btn.on_click = lambda : ok()
 
             resume_btn.on_press_left = lambda : resume_btn.set_image(self.btn_resume_img_clicked)
             resume_btn.on_hover_exit = lambda : resume_btn.set_image(self.btn_resume_img)
