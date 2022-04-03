@@ -74,7 +74,7 @@ class GameManager:
                 elif tile == '5':
                     row.append(Forum(self))
                 elif tile == '6':
-                    row.append(Churche(self))
+                    row.append(Church(self))
             self.city.grid.append(row)
 
         self.city.w = setup["size"]
