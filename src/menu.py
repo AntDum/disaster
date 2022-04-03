@@ -192,7 +192,7 @@ class Menu:
         self.panel.draw(screen)
 
     def end_game(self, screen):
-        if self.page != 4:
+        if True:
             self.page = 4
             self.background = self.bckg
 
