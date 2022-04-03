@@ -78,7 +78,7 @@ class TornadoCard(Card):
 
     def preview(self, x, y):
         city = self.manager.city
-        if y != -1 and y != city.h:
+        if 0 <= y < city.h :
             if x == -1: # right
                 self.axe = 2
                 self.pos = (0,y)
@@ -87,7 +87,7 @@ class TornadoCard(Card):
                 self.axe = 0
                 self.pos = (city.w-1,y)
                 return self.get().preview()
-        elif x != -1 and x != city.w:
+        elif 0 <= x < city.w :
             if y == -1: # down
                 self.axe = 3
                 self.pos = (x,0)

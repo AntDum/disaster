@@ -51,5 +51,6 @@ TUTO_HEIGHT = int(TUTO_WIDTH*2/3)
 
 SMALL_FONT = font.SysFont("Agency FB", 16)
 NORMAL_FONT = font.SysFont("Agency FB", 26)
+NORMAL_FONT_BOLD = font.SysFont("Agency FB", 30, True)
 LARGE_FONT = font.SysFont("Agency FB", 46)
-ULTRA_THICC_FONT = font.SysFont("Agency FB", 66)
+ULTRA_THICC_FONT = font.SysFont("Agency FB", 66, True)

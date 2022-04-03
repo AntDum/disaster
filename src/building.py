@@ -27,7 +27,7 @@ class Case:
             self.image = self.destroy_image
             self.manager.score += self.value
             self.is_destroyed = True
-            print(self.manager.score)
+            # print(self.manager.score)
 
     def is_protected(self, disaster):
         if not self.is_destroyed:

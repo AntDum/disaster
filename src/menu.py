@@ -22,6 +22,7 @@ class Menu:
     btn_exit_img_hover = import_button("exit_button_hover",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
 
     big_planche = import_button("big_planche",(int(BUTTON_WIDTH*2.4),int(BUTTON_HEIGHT*2)))
+    small_planche = import_button("big_planche", (BUTTON_WIDTH, BUTTON_HEIGHT))
 
     btn_level = import_button("level_button", (BUTTON_LENGTH, BUTTON_LENGTH))
     btn_level_hover = import_button("level_button_hover", (BUTTON_LENGTH, BUTTON_LENGTH))
@@ -122,7 +123,7 @@ class Menu:
 
             for i in range(NUMBER_LEVEL):
                 x = X[i%len(X)]
-                y = Y[i//len(X)]
+                y = Y[i//len(X)] + BUTTON_SPACING // 2
 
                 btn = Button((x,y), (BUTTON_LENGTH, BUTTON_LENGTH), LARGE_FONT, str(i+1), image=self.btn_level).center_text()
                 btn.on_hover_enter = (lambda j: (lambda : btn_list[j].set_image(self.btn_level_hover)))(i)
@@ -132,7 +133,11 @@ class Menu:
                 btn.on_click = (lambda j : (lambda : self.manager.play(j)))(i+1)
                 btn_list.append(btn)
 
+            img_planch = Button((0, -10), (BUTTON_WIDTH, BUTTON_HEIGHT), NORMAL_FONT_BOLD, "Level selection", text_color=(255,255,255)).center_x(pn).center_text()
+            img_planch.set_image(self.small_planche)
+
             pn.add(*btn_list)
+            pn.add(img_planch)
 
             self.panel = pn
 
@@ -155,7 +160,7 @@ class Menu:
 
             big_panel = GUIComponent((30,-10),(int(BUTTON_WIDTH*4.5),int(BUTTON_HEIGHT*8)), image = self.big_panel).center_x(pn).move((-20,-80))
 
-            print((int(BUTTON_WIDTH*4.5),int(BUTTON_HEIGHT*8)))
+            # print((int(BUTTON_WIDTH*4.5),int(BUTTON_HEIGHT*8)))
 
             exit_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1)), LARGE_FONT, "", image=self.btn_exit_img).center_x(pn).center_y(pn).move((430,180))
             exit_btn.on_press_left = lambda : exit_btn.set_image(self.btn_exit_img_clicked)
@@ -181,13 +186,19 @@ class Menu:
 
             pn = Panel((0,0), (WIDTH, HEIGHT))
             panel_bckg = GUIComponent((30,30),(PANEL_WIDTH,PANEL_HEIGHT), image = self.pause_bckg).center_x(pn).center_y(pn)
-            title = Label((30,50), "FIN", LARGE_FONT, text_color=(255,255,255)).center_x(pn).move((-50,0))
 
-            resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+            win, score = self.manager.current_win()
+            title = Label((30,50), "Win" if win else "Lose" + " Score : " + str(score), LARGE_FONT, text_color=(255,255,255)).center_x(pn).move((-50,0))
+
+            if win:
+                resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+                resume_btn.on_click = lambda : self.manager.next_level()
+            else:
+                resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+                resume_btn.on_click = lambda : self.manager.reset()
+
             resume_btn.on_press_left = lambda : resume_btn.set_image(self.btn_resume_img_clicked)
             resume_btn.on_hover_exit = lambda : resume_btn.set_image(self.btn_resume_img)
-            resume_btn.on_click = lambda : self.manager.next_level()
-
 
             exit_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_exit_img).center_x(pn).center_y(pn).move((-150,0))
             exit_btn.on_press_left = lambda : exit_btn.set_image(self.btn_exit_img_clicked)
