@@ -38,7 +38,7 @@ class Menu:
     bckg = import_background("main_menu")
 
 
-    tutorial = [import_tutorial("obj"),import_tutorial("tornado"),import_tutorial("tsunami"),import_tutorial("volcano"),import_tutorial("fire"),import_tutorial("meteor"),import_tutorial("flood")]
+    tutorial = [import_tutorial("obj"),import_tutorial("tornado"),import_tutorial("tsunami"),import_tutorial("volcano"),import_tutorial("fire"),import_tutorial("meteor"),import_tutorial("flood"),import_tutorial("pts")]
 
     iterator = 0
 
