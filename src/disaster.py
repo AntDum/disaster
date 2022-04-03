@@ -26,7 +26,7 @@ class Disaster:
 
 class Tornado(Disaster):
 
-    image = img.load(os.path.join("res","disaster","tornade_1.png"))
+    image = img.load(os.path.join("res","disaster","tornado1.png"))
 
 
     def __init__(self, axe, pos, city) -> None:
@@ -51,30 +51,30 @@ class Tornado(Disaster):
             for i in range(self.city.w-1, -1, -1):
                 pos = (i, self.pos[1])
                 case = self.city[pos]
+                l.append(pos)
                 if case.block(self):
                     break
-                l.append(pos)
         elif self.axe == 1: # top
             for i in range(self.city.h-1, -1, -1):
                 pos = (self.pos[0], i)
                 case = self.city[pos]
+                l.append(pos)
                 if case.block(self):
                     break
-                l.append(pos)
         elif self.axe == 2: # right
             for i in range(self.city.w):
                 pos = (i, self.pos[1])
                 case = self.city[pos]
+                l.append(pos)
                 if case.block(self):
                     break
-                l.append(pos)
         elif self.axe == 3: # down
             for i in range(self.city.h):
                 pos = (self.pos[0], i)
                 case = self.city[pos]
+                l.append(pos)
                 if case.block(self):
                     break
-                l.append(pos)
         return l
     
     def launch(self):
@@ -92,7 +92,7 @@ class Tornado(Disaster):
                 self.finish = True
 
 class Fire(Disaster):
-    image = img.load(os.path.join("res","disaster","tornade_1.png"))
+    image = img.load(os.path.join("res","disaster","fire1.png"))
 
     def __init__(self, city, pos) -> None:
         super().__init__(city)
@@ -124,7 +124,7 @@ class Flood(Disaster):
         super().__init__(city)
 
 class Tsunami(Disaster):
-    image = img.load(os.path.join("res","disaster","tsunami.png"))
+    image = img.load(os.path.join("res","disaster","tsunami1.png"))
 
     def __init__(self, city, axe) -> None:
         super().__init__(city)
@@ -139,10 +139,10 @@ class Tsunami(Disaster):
                 for j in range(self.city.h):
                     pos = (i, j)
                     case = self.city[pos]
-                    if case.block(self):
-                        no_j.add(j)
                     if j not in no_j:
                         mini_l.append(pos)
+                    if case.block(self):
+                        no_j.add(j)
                 l.append(mini_l)
         elif self.axe == 1 and self.city.coast[(self.axe+2)%4]: # top
             for i in range(self.city.h-1, -1, -1):
@@ -150,10 +150,10 @@ class Tsunami(Disaster):
                 for j in range(self.city.w):
                     pos = (j, i)
                     case = self.city[pos]
-                    if case.block(self):
-                        no_j.add(j)
                     if not j in no_j:
                         mini_l.append(pos)
+                    if case.block(self):
+                        no_j.add(j)
                 l.append(mini_l)
         elif self.axe == 2 and self.city.coast[(self.axe+2)%4]: # right
             for i in range(self.city.w):
@@ -161,10 +161,10 @@ class Tsunami(Disaster):
                 for j in range(self.city.h):
                     pos = (i, j)
                     case = self.city[pos]
-                    if case.block(self):
-                        no_j.add(j)
                     if not j in no_j:
                         mini_l.append(pos)
+                    if case.block(self):
+                        no_j.add(j)
                 l.append(mini_l)
         elif self.axe == 3 and self.city.coast[(self.axe+2)%4]: # down
             for i in range(self.city.h):
@@ -172,10 +172,10 @@ class Tsunami(Disaster):
                 for j in range(self.city.w):
                     pos = (j, i)
                     case = self.city[pos]
-                    if case.block(self):
-                        no_j.add(j)
                     if not j in no_j:
                         mini_l.append(pos)
+                    if case.block(self):
+                        no_j.add(j)
                 l.append(mini_l)
         return l
 

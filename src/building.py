@@ -1,14 +1,15 @@
 import pygame as pg
-from src.disaster import Tornado, Tsunami
+from src.disaster import Earthquake, Fire, Flood, Tornado, Tsunami
 from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:
     value = 5
-    destroy_image = import_tile("destruct")
-    background_image = import_tile("pave")
+    destroy_image = import_tile("ruins")
+    background_image = import_tile("cobble")
     def __init__(self, manager, image) -> None:
         self.protected = []
         self.blocked = []
+        self.dammagable = []
         self.manager = manager
         self.image = image
         self.is_destroyed = False
@@ -39,6 +40,12 @@ class Case:
             return isinstance(disaster, tuple(self.blocked))
         else:
             return False
+    
+    def is_dammagable(self, disaster):
+        if not self.is_destroyed:
+            return isinstance(disaster, tuple(self.dammagable))
+        else:
+            return False
 
     
 class NoBuilding(Case):
@@ -55,7 +62,9 @@ class House(Case):
     value = 20
     
     def __init__(self, manager) -> None:
-        super().__init__(manager, import_tile("bulding"))
+        super().__init__(manager, import_tile("house"))
+        self.blocked = []
+        self.protected = [Earthquake]
 
 class Bunker(Case):
 
@@ -63,4 +72,29 @@ class Bunker(Case):
 
     def __init__(self, manager) -> None:
         super().__init__(manager, pg.Surface((TILE_SIZE, TILE_SIZE)))
-        self.protected = [Tornado]
+        self.protected = [Tornado, Fire]
+
+class Church(Case):
+    def __init__(self, manager) -> None:
+        super().__init__(manager,  import_tile("church"))
+        self.blocked = [Tornado]
+        self.protected = [Earthquake]
+
+class FireStation(Case):
+    def __init__(self, manager) -> None:
+        super().__init__(manager,  import_tile("firefighters"))
+        self.blocked = []
+        self.protected = [Fire, Earthquake]
+        
+
+class Dyke(Case):
+    def __init__(self, manager) -> None:
+        super().__init__(manager,  pg.Surface((TILE_SIZE, TILE_SIZE)))
+        self.blocked = [Tsunami, Flood]
+        self.protected = [Tsunami, Flood]
+
+class Forum(Case):
+    def __init__(self, manager) -> None:
+        super().__init__(manager,  pg.Surface((TILE_SIZE, TILE_SIZE)))
+        self.blocked = []
+        self.protected = [Fire, Earthquake]
