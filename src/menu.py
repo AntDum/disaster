@@ -109,13 +109,14 @@ class Menu:
             for i in range(1, NUMBER_LEVEL+1):
                 x = X[i%len(X)]
                 y = Y[i//len(X)]
+
                 btn = Button((x,y), (BUTTON_LENGTH, BUTTON_LENGTH), LARGE_FONT, str(i), image=self.btn_level)
                 btn.on_hover_enter = lambda : btn.set_image(self.btn_level_hover)
                 btn.on_hover_exit = lambda : btn.set_image(self.btn_level)
                 btn.on_press_left = lambda : btn.set_image(self.btn_level_press)
 
                 btn.on_click = lambda : self.manager.play(i)
-                pn.add(pn)
+                pn.add(btn)
 
 
             self.panel = pn
