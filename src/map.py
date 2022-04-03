@@ -5,7 +5,7 @@ from project_od.utils import clamp
 class City:
     def __init__(self) -> None:
         self.grid = []
-        self.coast = [False, False, False, True] #Left, Up, Right, Down
+        self.coast = [True, True, True, True] #Left, Up, Right, Down
         self.preview_disaster = set()
         self.preview_destroy = set()
         self.w = 0

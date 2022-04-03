@@ -33,7 +33,6 @@ class GameManager:
         self.city = City()
         self.l = Level(level)
         setup = self.l.report()
-        print(setup.keys())
 
         self.city.grid = []
         for line in setup['grid']:
@@ -48,7 +47,6 @@ class GameManager:
         self.city.h = setup["size"]
 
         pn = Panel((0,0), (SIDE_WIDTH, HEIGHT))
-        #TODO : Automatiser les imports de cartes.
 
         self.cards = []
         positions = [(0,CARD_PADDING),(CARD_PADDING+CARD_WIDTH,CARD_PADDING),(0,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),(CARD_PADDING+CARD_WIDTH,CARD_PADDING + CARD_HEIGHT + CARD_PADDING),(0,2*(CARD_PADDING + CARD_HEIGHT) + CARD_PADDING),(CARD_PADDING+CARD_WIDTH,2*(CARD_PADDING + CARD_HEIGHT) + CARD_PADDING)]
@@ -97,6 +95,7 @@ class GameManager:
                     pos = self.disaster_selected.preview(*self.city.cursor_to_grid(mx, my)) # With the mouse
                     for p in pos:
                         self.city.add_preview(p)
+
 
                     if len(pos) > 0:
                         if pg.mouse.get_pressed()[0]:

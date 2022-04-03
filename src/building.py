@@ -1,5 +1,5 @@
 import pygame as pg
-from src.disaster import Tornado
+from src.disaster import Tornado, Tsunami
 from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:

@@ -124,51 +124,58 @@ class Flood(Disaster):
         super().__init__(city)
 
 class Tsunami(Disaster):
+    image = img.load(os.path.join("res","disaster","tsunami.png"))
+
     def __init__(self, city, axe) -> None:
         super().__init__(city)
         self.axe = axe
 
     def preview(self):
         l = []
-        if self.axe == 0 and self.city.coast[(self.axe+2)%2]: # left
-            for j in range(self.city.h):
+        no_j = set()
+        if self.axe == 0 and self.city.coast[(self.axe+2)%4]: # left
+            for i in range(self.city.w-1, -1, -1):
                 mini_l = []
-                for i in range(self.city.w-1, -1, -1):
+                for j in range(self.city.h):
                     pos = (i, j)
                     case = self.city[pos]
                     if case.block(self):
-                        break
-                    mini_l.append(pos)
+                        no_j.add(j)
+                    if j not in no_j:
+                        mini_l.append(pos)
                 l.append(mini_l)
-        elif self.axe == 1 and self.city.coast[(self.axe+2)%2]: # top
-            for j in range(self.city.w):
+        elif self.axe == 1 and self.city.coast[(self.axe+2)%4]: # top
+            for i in range(self.city.h-1, -1, -1):
                 mini_l = []
-                for i in range(self.city.h-1, -1, -1):
+                for j in range(self.city.w):
                     pos = (j, i)
                     case = self.city[pos]
                     if case.block(self):
-                        break
-                    mini_l.append(pos)
+                        no_j.add(j)
+                    if not j in no_j:
+                        mini_l.append(pos)
                 l.append(mini_l)
-        elif self.axe == 2 and self.city.coast[(self.axe+2)%2]: # right
-            for j in range(self.city.h):
+        elif self.axe == 2 and self.city.coast[(self.axe+2)%4]: # right
+            for i in range(self.city.w):
                 mini_l = []
-                for i in range(self.city.w):
+                for j in range(self.city.h):
                     pos = (i, j)
                     case = self.city[pos]
                     if case.block(self):
-                        break
-                    mini_l.append(pos)
+                        no_j.add(j)
+                    if not j in no_j:
+                        mini_l.append(pos)
                 l.append(mini_l)
-        elif self.axe == 3 and self.city.coast[(self.axe+2)%2]: # down
-            for j in range(self.city.w):
+        elif self.axe == 3 and self.city.coast[(self.axe+2)%4]: # down
+            for i in range(self.city.h):
                 mini_l = []
-                for i in range(self.city.h):
+                for j in range(self.city.w):
                     pos = (j, i)
                     case = self.city[pos]
                     if case.block(self):
-                        break
-                    mini_l.append(pos)
+                        no_j.add(j)
+                    if not j in no_j:
+                        mini_l.append(pos)
                 l.append(mini_l)
         return l
 
@@ -192,6 +199,12 @@ class Tsunami(Disaster):
             self.timer = 0
             if not self.move():
                 self.finish = True
+    
+    def draw(self, screen):
+        if self.moved < len(self.next):
+            for pos in self.next[self.moved]:
+                screen.blit(self.image, self.city.grid_to_screen(pos))
+        
 
 class Earthquake(Disaster):
     def __init__(self, city) -> None:
