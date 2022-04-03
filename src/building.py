@@ -34,23 +34,23 @@ class Case:
             return isinstance(disaster, tuple(self.protected))
         else:
             return False
-    
+
     def block(self, disaster):
         if not self.is_destroyed:
             return isinstance(disaster, tuple(self.blocked))
         else:
             return False
-    
+
     def is_dammagable(self, disaster):
         if not self.is_destroyed:
             return isinstance(disaster, tuple(self.dammagable))
         else:
             return False
-    
+
     def alive(self):
         return not self.is_destroyed
 
-    
+
 class NoBuilding(Case):
 
     value = 0
@@ -58,12 +58,12 @@ class NoBuilding(Case):
         super().__init__(manager, None)
 
         self.is_destroyed = True
-    
+
 
 class House(Case):
 
     value = 20
-    
+
     def __init__(self, manager) -> None:
         super().__init__(manager, import_tile("house"))
         self.blocked = []
@@ -90,7 +90,6 @@ class FireStation(Case):
         self.protected = [Fire, Earthquake]
         manager.city.fire_station.append(self)
         
-
 class Dyke(Case):
     def __init__(self, manager) -> None:
         super().__init__(manager,  import_tile("Dig"))
