@@ -1,0 +1,6 @@
+0 : NoBuilding
+1, 10, 11 : House
+2 : Casernes
+3,30,33 : Digue
+4 : Bunker
+5 : City hall
