@@ -40,6 +40,8 @@ while not gameManager.shutdown:
     if gameManager.in_game:
         if gameManager.paused:
             menu.pause(screen)
+        elif gameManager.game_finish:
+            menu.end_game(screen)
         else:
             gameManager.update(screen, dt)
     else:

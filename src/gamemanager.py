@@ -13,6 +13,7 @@ class GameManager:
 
     def __init__(self, screen) -> None:
         self.in_game = False
+        self.game_finish = False
         self.selecting = False
         self.paused = False
         self.shutdown = False
@@ -152,19 +153,23 @@ class GameManager:
     
     def finish_level(self):
         if self.city.has_forum():
-            print("WIN")
+            print("Lose")
         else:
-            print("LOSE")
+            print("Win")
         print(self.score)
-        self.pause()
+        self.game_finish = True
 
 
 
     def play(self, level=-1):
         self.screen.background = self.game_background
         self.in_game = True
+        self.game_finish = False
         self.selecting = False
         self.load_level(level)
+    
+    def next_level(self):
+        self.play(self.current_level + 1)
 
     def pause(self):
         self.paused = True
@@ -179,6 +184,7 @@ class GameManager:
         self.paused = False
         self.selecting = False
         self.in_game = False
+        self.game_finish = False
         self.how_to = False
 
     def select_level(self):
