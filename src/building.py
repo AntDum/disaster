@@ -1,5 +1,5 @@
 import pygame as pg
-from src.disaster import Earthquake, Fire, Flood, Tornado, Tsunami
+from src.disaster import Earthquake, Fire, Flood, Tornado, Tsunami, Volcano
 from option import TILE_SIZE
 from src.ressources import import_tile
 class Case:
@@ -75,7 +75,7 @@ class Bunker(Case):
 
     def __init__(self, manager) -> None:
         super().__init__(manager, import_tile("Bunker"))
-        self.protected = [Tornado, Fire]
+        self.protected = [Tornado, Fire, Tsunami, Flood, Volcano]
 
 class Church(Case):
     def __init__(self, manager) -> None:
@@ -89,16 +89,16 @@ class FireStation(Case):
         self.blocked = []
         self.protected = [Fire, Earthquake]
         manager.city.fire_station.append(self)
-        
+
 class Dyke(Case):
     def __init__(self, manager) -> None:
         super().__init__(manager,  import_tile("Dig"))
         self.blocked = [Tsunami, Flood]
-        self.protected = [Tsunami, Flood]
+        self.protected = [Tsunami, Flood,Tornado]
 
 class Forum(Case):
     def __init__(self, manager) -> None:
         super().__init__(manager,  import_tile("Mairie"))
         self.blocked = []
-        self.protected = [Fire, Earthquake]
+        self.protected = [Tsunami,Flood,Tornado, Earthquake]
         manager.city.forum.append(self)
