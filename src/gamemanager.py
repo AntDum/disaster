@@ -16,6 +16,7 @@ class GameManager:
         self.selecting = False
         self.paused = False
         self.shutdown = False
+        self.how_to = False
 
         self.city = None
         self.side_bar = None
@@ -173,11 +174,15 @@ class GameManager:
 
     def quit(self):
         self.shutdown = True
-    
+
     def home(self):
         self.paused = False
         self.selecting = False
         self.in_game = False
-    
+        self.how_to = False
+
     def select_level(self):
         self.selecting = True
+
+    def how_to_play(self):
+        self.how_to = True

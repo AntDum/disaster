@@ -17,3 +17,6 @@ def import_disaster(file):
 
 def import_card(file):
     return scale(img.load(os.path.join("res","card",f"{file}.png")),(CARD_WIDTH,CARD_HEIGHT))
+
+def import_tutorial(file):
+    return scale(img.load(os.path.join("res","tutorial",f"{file}.png")),(TUTO_WIDTH,TUTO_HEIGHT))

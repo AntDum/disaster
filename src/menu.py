@@ -1,7 +1,7 @@
 from project_od.gui import Panel, Button, Label,GUIComponent
 from option import *
 import pygame as pg
-from src.ressources import import_button,import_background
+from src.ressources import import_button,import_background, import_tutorial
 
 class Menu:
 
@@ -16,8 +16,8 @@ class Menu:
     btn_resume_img = import_button("resume_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
     btn_resume_img_clicked = import_button("resume_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
 
-    btn_exit_img = import_button("exit_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
-    btn_exit_img_clicked = import_button("exit_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
+    btn_exit_img = import_button("exit_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1)))
+    btn_exit_img_clicked = import_button("exit_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1)))
 
     big_planche = import_button("big_planche",(int(BUTTON_WIDTH*2.4),int(BUTTON_HEIGHT*2)))
 
@@ -25,8 +25,15 @@ class Menu:
     btn_level_hover = import_button("level_button_hover", (BUTTON_LENGTH, BUTTON_LENGTH))
     btn_level_press = import_button("level_button_press", (BUTTON_LENGTH, BUTTON_LENGTH))
 
+    big_panel = import_button("big_planche",(int(BUTTON_WIDTH*4.5),int(BUTTON_HEIGHT*8)))
+
     pause_bckg = import_button("big_planche",(PANEL_WIDTH,PANEL_HEIGHT))
     bckg = import_background("main_menu")
+
+
+    tutorial = [import_tutorial("tornado"),import_tutorial("tsunami"),import_tutorial("volcano"),import_tutorial("fire"),import_tutorial("meteor"),import_tutorial("flood")]
+
+    iterator = 0
 
 
     def __init__(self, gameManager) -> None:
@@ -63,6 +70,7 @@ class Menu:
             quit_btn.label.move((35,-3))
 
             play_btn.on_click = lambda : self.manager.select_level()
+            how_to_btn.on_click = lambda : self.manager.how_to_play()
             quit_btn.on_click = lambda : self.manager.quit()
 
             pn.add(play_btn, how_to_btn, quit_btn, big_planche, title)
@@ -122,6 +130,41 @@ class Menu:
 
             pn.add(*btn_list)
 
+            self.panel = pn
+
+        self.panel.update()
+        self.panel.draw(screen)
+
+    def lmd(self,obj):
+        self.iterator += 1
+        if(self.iterator < len(self.tutorial)):
+            obj.set_image(self.tutorial[self.iterator])
+        else:
+            self.manager.home()
+
+    def menu_how_to_play(self,screen):
+        if self.page != 3:
+            self.page = 3
+            self.background = self.bckg
+
+            pn = Panel((0,0), (WIDTH, HEIGHT))
+
+            big_panel = GUIComponent((30,-10),(int(BUTTON_WIDTH*4.5),int(BUTTON_HEIGHT*8)), image = self.big_panel).center_x(pn).move((-20,-80))
+
+            print((int(BUTTON_WIDTH*4.5),int(BUTTON_HEIGHT*8)))
+
+            exit_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1)), LARGE_FONT, "", image=self.btn_exit_img).center_x(pn).center_y(pn).move((430,180))
+            exit_btn.on_press_left = lambda : exit_btn.set_image(self.btn_exit_img_clicked)
+            exit_btn.on_hover_exit = lambda : exit_btn.set_image(self.btn_exit_img)
+            exit_btn.on_click = lambda : self.manager.home()
+
+            self.iterator = 0
+
+            tuto = Button((0,0), (TUTO_WIDTH,TUTO_HEIGHT),NORMAL_FONT,"", image = self.tutorial[self.iterator]).center_x(pn).center_y(pn)
+
+            tuto.on_click = lambda : self.lmd(tuto)
+
+            pn.add(big_panel,exit_btn,tuto)
             self.panel = pn
 
         self.panel.update()
