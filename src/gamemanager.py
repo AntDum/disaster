@@ -27,7 +27,7 @@ class GameManager:
 
         self.l = None
         self.current_level = 1
-    
+
     def init_value(self):
         self.disaster_selected = None
         self.disaster_launch = False
@@ -44,7 +44,7 @@ class GameManager:
                 self.disaster_selected.selected = False
             self.disaster_selected = disaster
             disaster.selected = True
-    
+
     def set_level(self, level):
         self.current_level = level
 
@@ -63,10 +63,18 @@ class GameManager:
             for tile in line:
                 if tile == '0':
                     row.append(NoBuilding(self))
-                elif tile == '1': 
+                elif tile == '1':
                     row.append(House(self))
                 elif tile == '2':
                     row.append(FireStation(self))
+                elif '3' in tile:
+                    row.append(Dyke(self))
+                elif tile == '4':
+                    row.append(Bunker(self))
+                elif tile == '5':
+                    row.append(Forum(self))
+                elif tile == '6':
+                    row.append(Churche(self))
             self.city.grid.append(row)
 
         self.city.w = setup["size"]
@@ -150,7 +158,7 @@ class GameManager:
 
         if self.disaster_launch:
             self.disaster.draw(screen)
-    
+
     def finish_level(self):
         if self.city.has_forum():
             print("Lose")
