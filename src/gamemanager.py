@@ -9,6 +9,7 @@ from src.level import Level
 class GameManager:
     def __init__(self, screen) -> None:
         self.in_game = False
+        self.selecting = False
         self.paused = False
         self.shutdown = False
 
@@ -24,14 +25,20 @@ class GameManager:
         self.score = 0
 
         self.l = None
+        self.current_level = 1
 
     def set_disaster(self, disaster):
         if not self.disaster_launch:
             self.disaster_selected = disaster
-
+    
     def set_level(self, level):
+        self.current_level = level
+
+    def load_level(self, level=-1):
+        if level != -1:
+            self.current_level = level
         self.city = City()
-        self.l = Level(level)
+        self.l = Level(self.current_level)
         setup = self.l.report()
 
         self.city.grid = []
@@ -78,7 +85,10 @@ class GameManager:
         pn.move((SIDE_POS, 0))
 
         self.side_bar = pn
+        self.disaster_selected = None
+        self.disaster_launch = False
 
+        self.disaster = None
         self.score = 0
 
     def update(self, screen, dt):
@@ -119,9 +129,11 @@ class GameManager:
 
 
 
-    def play(self):
-        self.screen.make_background((35,35,35))
+    def play(self, level=-1):
+        # self.screen.make_background((35,35,35))
         self.in_game = True
+        self.selecting = False
+        self.load_level(level)
 
     def pause(self):
         self.paused = True
@@ -131,3 +143,11 @@ class GameManager:
 
     def quit(self):
         self.shutdown = True
+    
+    def home(self):
+        self.paused = False
+        self.selecting = False
+        self.in_game = False
+    
+    def select_level(self):
+        self.selecting = True

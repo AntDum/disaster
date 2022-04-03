@@ -71,7 +71,7 @@ class Bunker(Case):
     value = 10
 
     def __init__(self, manager) -> None:
-        super().__init__(manager, pg.Surface((TILE_SIZE, TILE_SIZE)))
+        super().__init__(manager, import_tile("Bunker"))
         self.protected = [Tornado, Fire]
 
 class Church(Case):
@@ -89,12 +89,12 @@ class FireStation(Case):
 
 class Dyke(Case):
     def __init__(self, manager) -> None:
-        super().__init__(manager,  pg.Surface((TILE_SIZE, TILE_SIZE)))
+        super().__init__(manager,  import_tile("Dig"))
         self.blocked = [Tsunami, Flood]
         self.protected = [Tsunami, Flood]
 
 class Forum(Case):
     def __init__(self, manager) -> None:
-        super().__init__(manager,  pg.Surface((TILE_SIZE, TILE_SIZE)))
+        super().__init__(manager,  import_tile("Mairie"))
         self.blocked = []
         self.protected = [Fire, Earthquake]

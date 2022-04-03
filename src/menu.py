@@ -21,6 +21,9 @@ class Menu:
 
     big_planche = import_button("big_planche",(int(BUTTON_WIDTH*2.4),int(BUTTON_HEIGHT*2)))
 
+    btn_level = import_button()
+    btn_level_hover = import_button()
+    btn_level_press = import_button()
 
     pause_bckg = import_button("big_planche",(PANEL_WIDTH,PANEL_HEIGHT))
     bckg = import_background("main_menu")
@@ -59,7 +62,7 @@ class Menu:
             quit_btn.on_press_left = lambda : quit_btn.set_image(self.btn1_img_click)
             quit_btn.label.move((35,-3))
 
-            play_btn.on_click = lambda : self.manager.play()
+            play_btn.on_click = lambda : self.manager.select_level()
             quit_btn.on_click = lambda : self.manager.quit()
 
             pn.add(play_btn, how_to_btn, quit_btn, big_planche, title)
@@ -71,6 +74,7 @@ class Menu:
     def pause(self, screen):
         if self.page != 1:
             self.page = 1
+            screen.background = self.bckg
             pn = Panel((0,0), (WIDTH, HEIGHT))
             panel_bckg = GUIComponent((30,30),(PANEL_WIDTH,PANEL_HEIGHT), image = self.pause_bckg).center_x(pn).center_y(pn)
             title = Label((30,50), "Pause", LARGE_FONT, text_color=(255,255,255)).center_x(pn).move((-50,0))
@@ -84,10 +88,37 @@ class Menu:
             exit_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "", image=self.btn_exit_img).center_x(pn).center_y(pn).move((-150,0))
             exit_btn.on_press_left = lambda : exit_btn.set_image(self.btn_exit_img_clicked)
             exit_btn.on_hover_exit = lambda : exit_btn.set_image(self.btn_exit_img)
-            exit_btn.on_click = lambda : self.manager.quit()
+            exit_btn.on_click = lambda : self.manager.home()
 
 
             pn.add(panel_bckg,resume_btn,exit_btn,title)
             self.panel = pn
+
+        self.panel.update()
+        self.panel.draw(screen)
+
+    def menu_selector(self, screen):
+        if self.page != 2:
+            self.page = 2
+            screen.background = self.bckg
+            pn = Panel((0,0), (WIDTH, HEIGHT))
+
+            X = [BUTTON_SPACING, BUTTON_SPACING*3, BUTTON_SPACING*5]
+            Y = [BUTTON_SPACING, BUTTON_SPACING*3]
+
+            for i in range(1, NUMBER_LEVEL+1):
+                x = X[i%len(X)]
+                y = Y[i//len(X)]
+                btn = Button((x,y), (BUTTON_LENGTH, BUTTON_LENGTH), LARGE_FONT, str(i), image=self.btn_level)
+                btn.on_hover_enter = lambda : btn.set_image(self.btn_level_hover)
+                btn.on_hover_exit = lambda : btn.set_image(self.btn_level)
+                btn.on_press_left = lambda : btn.set_image(self.btn_level_press)
+
+                btn.on_click = lambda : self.manager.play(i)
+                pn.add(pn)
+
+
+            self.panel = pn
+
         self.panel.update()
         self.panel.draw(screen)
