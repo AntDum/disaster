@@ -33,6 +33,10 @@ PANEL_HEIGHT = 400
 
 NUMBER_LEVEL = 32
 
+TUTO_WIDTH = 600
+TUTO_HEIGHT = int(TUTO_WIDTH*2/3)
+
+
 SMALL_FONT = font.SysFont("Agency FB", 16)
 NORMAL_FONT = font.SysFont("Agency FB", 26)
 LARGE_FONT = font.SysFont("Agency FB", 46)

@@ -45,6 +45,8 @@ while not gameManager.shutdown:
     else:
         if gameManager.selecting:
             menu.menu_selector(screen)
+        elif gameManager.how_to:
+            menu.menu_how_to_play(screen)
         else:
             menu.home(screen)
 
