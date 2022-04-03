@@ -88,14 +88,14 @@ class TsunamiCard(Card):
         city = self.manager.city
         tsu = None
         if y != -1 and y != city.h:
-            if x == -1: # right
+            if x == -1: # left
                 self.axe = 2
-            elif x == city.w: # left
+            elif x == city.w: # right
                 self.axe = 0
         elif x != -1 and x != city.w:
-            if y == -1: # down
+            if y == -1: # up
                 self.axe = 3
-            elif y == city.h: # up
+            elif y == city.h: # down
                 self.axe = 1
         tsu = self.get().preview()
         return [j for i in tsu for j in i]
