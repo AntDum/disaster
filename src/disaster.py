@@ -123,8 +123,44 @@ class Flood(Disaster):
         super().__init__(city)
 
 class Tsunami(Disaster):
-    def __init__(self, city) -> None:
+    def __init__(self, city, axe) -> None:
         super().__init__(city)
+        self.axe = axe
+
+    def preview(self):
+        l = []
+        if self.axe == 0: # left
+            for i in range(self.city.w-1, -1, -1):
+                mini_l = []
+                for j in range(self.city.h):
+                    pos = (i, j)
+                    case = self.city[pos]
+                    if case.block(self):
+                        break
+                    mini_l.append(pos)
+                l.append(mini_l)
+        elif self.axe == 1: # top
+            for i in range(self.city.h-1, -1, -1):
+                pos = (self.pos[0], i)
+                case = self.city[pos]
+                if case.block(self):
+                    break
+                l.append(pos)
+        elif self.axe == 2: # right
+            for i in range(self.city.w):
+                pos = (i, self.pos[1])
+                case = self.city[pos]
+                if case.block(self):
+                    break
+                l.append(pos)
+        elif self.axe == 3: # down
+            for i in range(self.city.h):
+                pos = (self.pos[0], i)
+                case = self.city[pos]
+                if case.block(self):
+                    break
+                l.append(pos)
+        return l
 
 class Earthquake(Disaster):
     def __init__(self, city) -> None:
