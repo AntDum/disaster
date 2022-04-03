@@ -13,15 +13,11 @@ class Menu:
     btn2_img_hover = import_button("main_menu_button2_hover",(int(BUTTON_WIDTH*1.4),int(BUTTON_HEIGHT*1.4)))
     btn2_img_click = import_button("main_menu_button2_click",(int(BUTTON_WIDTH*1.4),int(BUTTON_HEIGHT*1.4)))
 
-<<<<<<< HEAD
-    btn_resume_img = import_button("resume_button",(BUTTON_HEIGHT,BUTTON_HEIGHT))
-=======
     btn_resume_img = import_button("resume_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
     btn_resume_img_clicked = import_button("resume_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
 
     btn_exit_img = import_button("exit_button",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
     btn_exit_img_clicked = import_button("exit_button_clicked",(BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)))
->>>>>>> a863b6a0ebaa1bf74105e26529f8a6ad1b7ef8b9
 
     big_planche = import_button("big_planche",(int(BUTTON_WIDTH*2.4),int(BUTTON_HEIGHT*2)))
 
