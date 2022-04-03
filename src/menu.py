@@ -103,21 +103,26 @@ class Menu:
             screen.background = self.bckg
             pn = Panel((0,0), (WIDTH, HEIGHT))
 
-            X = [BUTTON_SPACING, BUTTON_SPACING*3, BUTTON_SPACING*5]
-            Y = [BUTTON_SPACING, BUTTON_SPACING*3]
+            X = [BUTTON_SPACING, BUTTON_SPACING*3, BUTTON_SPACING*5, BUTTON_SPACING*7, BUTTON_SPACING*9, BUTTON_SPACING*11, BUTTON_SPACING*13, BUTTON_SPACING*15]
+            Y = [BUTTON_SPACING, BUTTON_SPACING*3, BUTTON_SPACING*5, BUTTON_SPACING*7]
 
-            for i in range(1, NUMBER_LEVEL+1):
+            btn_list = []
+
+            for i in range(NUMBER_LEVEL):
                 x = X[i%len(X)]
                 y = Y[i//len(X)]
 
-                btn = Button((x,y), (BUTTON_LENGTH, BUTTON_LENGTH), LARGE_FONT, str(i), image=self.btn_level)
-                btn.on_hover_enter = lambda : btn.set_image(self.btn_level_hover)
-                btn.on_hover_exit = lambda : btn.set_image(self.btn_level)
-                btn.on_press_left = lambda : btn.set_image(self.btn_level_press)
+                btn = Button((x,y), (BUTTON_LENGTH, BUTTON_LENGTH), LARGE_FONT, str(i+1), image=self.btn_level).center_text()
+                btn._i = i
+                btn.on_hover_enter = lambda : btn_list[i].set_image(self.btn_level_hover)
+                btn.on_hover_exit = lambda : btn_list[i].set_image(self.btn_level)
+                btn.on_press_left = lambda : btn_list[i].set_image(self.btn_level_press)
 
-                btn.on_click = lambda : self.manager.play(i)
-                pn.add(btn)
+                btn.on_click = lambda : print(i)
+                # btn.on_click = lambda : self.manager.play(i+1)
+                btn_list.append(btn)
 
+            pn.add(*btn_list)
 
             self.panel = pn
 
