@@ -204,10 +204,12 @@ class Menu:
             score = Label((30,100), " Score : " + str(score), LARGE_FONT, text_color=(255,255,255)).center_x(pn)
 
             if win:
-                resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "Next", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+                resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "Next Level", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+                resume_btn.label.move((0,int(BUTTON_HEIGHT*0.8)))
                 resume_btn.on_click = lambda : self.manager.next_level()
             else:
                 resume_btn = Button((15,150), (BUTTON_HEIGHT*2,int(BUTTON_HEIGHT*1.5)), LARGE_FONT, "Replay", image=self.btn_resume_img).center_x(pn).center_y(pn).move((150,0))
+                resume_btn.label.move((0,int(BUTTON_HEIGHT*0.8)))
                 resume_btn.on_click = lambda : self.manager.reset()
 
             resume_btn.on_press_left = lambda : resume_btn.set_image(self.btn_resume_img_clicked)

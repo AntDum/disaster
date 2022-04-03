@@ -14,6 +14,14 @@ class GameManager:
     end_game_background = import_background("end_game")
     small_planche = import_button("big_planche", (BUTTON_WIDTH, BUTTON_HEIGHT))
 
+    btn_reset_img = import_button("restart_button",(BUTTON_HEIGHT, BUTTON_HEIGHT))
+    btn_reset_img_clicked = import_button("restart_button_clicked",(BUTTON_HEIGHT, BUTTON_HEIGHT))
+    # btn_reset_img_hover = import_button("restart_button_hover",(BUTTON_HEIGHT*2, BUTTON_HEIGHT))
+
+    btn_pause_img = import_button("pause_button",(BUTTON_HEIGHT, BUTTON_HEIGHT))
+    btn_pause_img_clicked = import_button("pause_button_clicked",(BUTTON_HEIGHT, BUTTON_HEIGHT))
+    # btn_pause_img_hover = import_button("pause_button_hover",(BUTTON_HEIGHT*2, BUTTON_HEIGHT))
+
     def __init__(self, screen) -> None:
         self.in_game = False
         self.game_finish = False
@@ -115,17 +123,34 @@ class GameManager:
 
             self.disaster_count += int(qte)
 
-        self.score_label = Button((SIDE_POS_X/2-30,-20),(BUTTON_WIDTH, BUTTON_HEIGHT), NORMAL_FONT_BOLD, "Score : 0", text_color=(255,255,255)).center_text()
-        self.score_label.set_image(self.small_planche)
         pn.add(*self.cards)
 
         pn.move((SIDE_POS_X, SIDE_POS_Y))
+
+        self.score_label = Button((SIDE_POS_X/2-30,-20),(BUTTON_WIDTH, BUTTON_HEIGHT), NORMAL_FONT_BOLD, "Score : 0", text_color=(255,255,255)).center_text()
+        self.score_label.set_image(self.small_planche)
+
+        pn_btn = Panel((0,0), (WIDTH, HEIGHT))
+
+        self.pause_btn = Button((0,0), (BUTTON_HEIGHT, BUTTON_HEIGHT), NORMAL_FONT, "", image=self.btn_pause_img)
+        self.pause_btn.on_press_left = lambda : self.pause_btn.set_image(self.btn_pause_img_clicked)
+        self.pause_btn.on_hover_exit = lambda : self.pause_btn.set_image(self.btn_pause_img)
+        self.pause_btn.on_click = lambda : self.pause()
+
+        self.reset_btn = Button((BUTTON_HEIGHT,0), (BUTTON_HEIGHT, BUTTON_HEIGHT), NORMAL_FONT, "", image=self.btn_reset_img)
+        self.reset_btn.on_press_left = lambda : self.reset_btn.set_image(self.btn_reset_img_clicked)
+        self.reset_btn.on_hover_exit = lambda : self.reset_btn.set_image(self.btn_reset_img)
+        self.reset_btn.on_click = lambda : self.reset()
+
+        pn_btn.add(self.pause_btn, self.reset_btn)
+        self.tool = pn_btn
 
         self.side_bar = pn
 
     def update(self, screen, dt):
         self.score_label.set_text("Score : "+str(self.score))
         self.side_bar.update()
+        self.tool.update()
         self.city.update(0)
 
         if not self.disaster_launch and self.disaster_count == 0:
@@ -158,6 +183,7 @@ class GameManager:
                 self.disaster_launch = False
 
         self.score_label.draw(screen)
+        self.tool.draw(screen)
         self.city.draw(screen)
         self.side_bar.draw(screen)
 
